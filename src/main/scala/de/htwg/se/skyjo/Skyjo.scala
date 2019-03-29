@@ -2,7 +2,7 @@ package de.htwg.se.skyjo
 
 import de.htwg.se.skyjo.model.Player
 
-object YourGame {
+object Skyjo {
   def main(args: Array[String]): Unit = {
     val student = Player("Your Name")
     println("Hello, " + student.name)
