@@ -5,4 +5,3 @@ object Skyjo {
     println("Projekt: Skyjo")
   }
 }
-
