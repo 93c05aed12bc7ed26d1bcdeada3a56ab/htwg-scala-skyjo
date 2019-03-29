@@ -6,6 +6,8 @@
 
 # Game rules
 
+temp link: http://www.angespielt.de/kritiken/skyjo
+
 ## Goal
 
 Every player gets 12 numeric cards which they want to optimize during the game. The player with the smallest sum at the end wins this round.
