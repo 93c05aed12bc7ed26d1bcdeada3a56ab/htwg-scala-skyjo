@@ -4,18 +4,18 @@ case class Hand() {
 
   var cards = Array.ofDim[Card](3,4)
 
-  var card1 = Card(1)
-  var card2 = Card(2)
-  var card3 = Card(3)
-  var card4 = Card(4)
-  var card5 = Card(5)
-  var card6 = Card(6)
-  var card7 = Card(7)
-  var card8 = Card(8)
-  var card9 = Card(9)
-  var card10 = Card(10)
-  var card11 = Card(11)
-  var card12 = Card(12)
+  var card1 = Card()
+  var card2 = Card()
+  var card3 = Card()
+  var card4 = Card()
+  var card5 = Card()
+  var card6 = Card()
+  var card7 = Card()
+  var card8 = Card()
+  var card9 = Card()
+  var card10 = Card()
+  var card11 = Card()
+  var card12 = Card()
 
   cards(0)(0) = card1
   cards(0)(1) = card2
