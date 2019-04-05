@@ -1,5 +1,5 @@
 package de.htwg.se.skyjo.model
 
-class Card(value: Int) {
+case class Card(var value: Int) {
 
 }
