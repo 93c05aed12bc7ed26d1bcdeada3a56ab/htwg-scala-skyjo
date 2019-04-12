@@ -5,21 +5,14 @@ import org.scalatest._
 
 class PlayerSpec extends WordSpec with Matchers {
   "A Player" when { "new" should {
-    val player = Player("Your Name")
+    val player = Player("Hans")
     "have a name"  in {
-      player.name should be("Your Name")
-    }
-    "have a hand" in {
-      player.hand should be(Hand())
-    }
-    "have a nice String representation from name" in {
-      player.printName should be("Your Name")
-    }
-    "have a nice String representation from hand" in {
-      player.printHand should be("#,#,#,#\n#,#,#,#\n#,#,#,#")
+      player.name should be("Hans")
     }
     "have a nice String representation" in {
-      player.toString should be("Your Name\n#,#,#,#\n#,#,#,#\n#,#,#,#")
+      player.toString should be("Hans")
     }
   }}
+
+
 }

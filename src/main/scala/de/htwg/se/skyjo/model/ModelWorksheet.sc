@@ -1,3 +1,4 @@
+
 case class Card(value: Int)
 
 val card1 = Card(1)
@@ -12,7 +13,7 @@ val card9 = Card(9)
 
 case class Hand(cards: Array[Array[Card]])
 
-val hand = Hand(Array.ofDim[Array[Card]](3))
+val hand = Hand(Array.ofDim[Card](3, 4))
 hand.cards(0) = Array(card1, card2, card3)
 hand.cards(1) = Array(card4, card5, card6)
 hand.cards(2) = Array(card7, card8, card9)
@@ -30,3 +31,4 @@ player.hand.cards(1)(2).value
 player.hand.cards(2)(0).value
 player.hand.cards(2)(1).value
 player.hand.cards(2)(2).value
+

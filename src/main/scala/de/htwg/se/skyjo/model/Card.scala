@@ -1,7 +1,5 @@
 package de.htwg.se.skyjo.model
 
-case class Card() {
-  var value = "#"
-
-  def isSet: Boolean = value != "#"
+case class Card(value: Int = 0) {
+  override def toString:String = value.toString
 }
