@@ -1,6 +1,6 @@
 package de.htwg.se.skyjo
 
-import de.htwg.se.skyjo.model.Player
+import de.htwg.se.skyjo.model.{Deck, Player}
 
 object Skyjo {
   def main(args: Array[String]): Unit = {
@@ -10,5 +10,8 @@ object Skyjo {
     println(player.name)
     println(player.printHand)
     println(player.hand.cards(0)(0))
+
+    var deck = Deck()
+    deck.printDeck()
   }
 }
