@@ -9,9 +9,6 @@ class PlayerSpec extends WordSpec with Matchers {
     "have a name"  in {
       player.name should be("Hans")
     }
-    "have a nice name" in {
-      player.printName should be("Hans")
-    }
     "have a nice hand representation" in {
       player.printHand should be ("#,#,#,#\n#,#,#,#\n#,#,#,#")
     }

@@ -10,7 +10,15 @@ case class Deck() {
   }
   cards = scala.util.Random.shuffle(cards)
 
-  def printDeck() = {
+
+  def drawCard(): Card = {
+    val draw = cards(0)
+    draw.isUncovered = true
+    cards.remove(0)
+    draw
+  }
+
+  def printDeck() : Unit = {
     for(i <- cards) {
       println(i.value)
     }
