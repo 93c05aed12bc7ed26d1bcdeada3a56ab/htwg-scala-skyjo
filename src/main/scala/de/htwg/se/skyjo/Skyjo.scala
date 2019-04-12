@@ -7,8 +7,7 @@ object Skyjo {
     println("Projekt: Skyjo")
 
     var player = Player("Hans")
-    println(player.name)
-    println(player.printHand)
-    println(player.hand.cards(0)(0))
+
+    println(player.toString)
   }
 }

@@ -4,9 +4,19 @@ import org.scalatest._
 
 class CardSpec extends WordSpec with Matchers{
   "A Card" when { "new" should {
-    val card = Card()
+    var card = Card()
     "have a card"  in {
-      card.value should be(0)
+      card.value should be(Card.valUndefined)
+    }
+    "be able to be printed uncovered" in {
+      card = Card(10)
+      card.isUncovered = true
+      card.getValue should be("10")
+    }
+    "be able to be printed covered" in {
+      card = Card(10)
+      card.isUncovered = false
+      card.getValue should be("#")
     }
   }}
 }
