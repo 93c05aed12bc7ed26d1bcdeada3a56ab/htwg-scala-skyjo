@@ -1,5 +1,5 @@
 package de.htwg.se.skyjo.model
 
-class Deck {
-
+case class Deck() {
+  var cards: Array[Card] = Array.ofDim[Card]()
 }
