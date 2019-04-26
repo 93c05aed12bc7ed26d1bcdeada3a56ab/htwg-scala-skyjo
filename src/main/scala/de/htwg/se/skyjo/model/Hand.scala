@@ -12,7 +12,7 @@ case class Hand() {
       j <- 0 until 4
   } cards(i)(j) = Card()
 
-  def summerize(): Int = {
+  def summarize(): Int = {
     var sum: Int = 0
 
     for {

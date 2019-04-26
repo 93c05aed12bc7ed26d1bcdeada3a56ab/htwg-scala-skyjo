@@ -30,14 +30,15 @@ object Skyjo {
 
     println(player.toString)
 
-    println("Karte vom Ablagestapel nehmen? (y/n)")
+    println("Karte " + discardPile.top.value + " vom Ablagestapel nehmen? (y/n)")
     var input = scala.io.StdIn.readLine()
 
     if (input == "y") {
+      println("Karte " + discardPile.top.value + " vom Ablagestapel gezogen.")
       trade(player, discardPile.pop())
     }else {
       discardPile.push(deck.drawCard())
-      println("Karte " + discardPile.top.value + " gezogen")
+      println("Karte " + discardPile.top.value + " vom Aufnahmestapel gezogen")
       trade(player, discardPile.pop())
     }
 
@@ -51,18 +52,18 @@ object Skyjo {
   def start(player: Player, deck: Deck): Unit = {
     println("Zwei Karten aufdecken.")
 
-    println("Zweite Karte: y-Achse eingeben (0,1,2) und x-Achse eingeben (0,1,2,3) zB 00 oder 32")
+    println("Zweite Karte: y-Achse eingeben (0,1,2) und x-Achse eingeben (0,1,2,3) zB 00 oder 23")
     var yx = scala.io.StdIn.readLine()
     player.hand.cards(yx.charAt(0).toString.toInt)(yx.charAt(1).toString.toInt) = deck.drawCard()
 
-    println("Zweite Karte: y-Achse eingeben (0,1,2) und x-Achse eingeben (0,1,2,3) zB 00 oder 32")
+    println("Zweite Karte: y-Achse eingeben (0,1,2) und x-Achse eingeben (0,1,2,3) zB 00 oder 23")
     yx = scala.io.StdIn.readLine()
     player.hand.cards(yx.charAt(0).toString.toInt)(yx.charAt(1).toString.toInt) = deck.drawCard()
   }
 
   def trade(player: Player, card: Card): Unit ={
     println("Welche Karte möchten Sie tauschen?")
-    println("y-Achse eingeben (0,1,2) und x-Achse eingeben (0,1,2,3) zB 00 oder 32")
+    println("y-Achse eingeben (0,1,2) und x-Achse eingeben (0,1,2,3) zB 00 oder 23")
     var yx = scala.io.StdIn.readLine()
     player.hand.cards(yx.charAt(0).toString.toInt)(yx.charAt(1).toString.toInt) = card
   }

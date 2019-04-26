@@ -17,12 +17,15 @@ case class Deck() {
     cards.remove(0)
     draw
   }
-
+  /*
+  // Wie testen wir sowas?
   def printDeck() : Unit = {
     for(i <- cards) {
       println(i.value)
     }
   }
+  */
+
 }
 
 
