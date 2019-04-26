@@ -44,7 +44,7 @@ object Skyjo {
 
     println(player.toString)
     println()
-    if (!discardPile.isEmpty){println("Ablagestapel: " + discardPile.top.value)}
+    if (discardPile.nonEmpty){println("Ablagestapel: " + discardPile.top.value)}
     println("Karten im Deck: " + deck.cards.length)
 
   }

@@ -12,7 +12,7 @@ case class Deck() {
 
 
   def drawCard(): Card = {
-    val draw = cards(0)
+    val draw = cards.head
     draw.isUncovered = true
     cards.remove(0)
     draw
