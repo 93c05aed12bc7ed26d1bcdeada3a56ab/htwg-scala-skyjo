@@ -8,8 +8,11 @@ case class Deck() {
   for(i <- 0 until 150) {
     cards += Card(Card.possibleValues(i / 10))
   }
-  cards = scala.util.Random.shuffle(cards)
 
+  def shuffle(): Deck = {
+    cards = scala.util.Random.shuffle(cards)
+    this
+  }
 
   def drawCard(): Card = {
     val draw = cards.head
@@ -17,15 +20,6 @@ case class Deck() {
     cards.remove(0)
     draw
   }
-  /*
-  // Wie testen wir sowas?
-  def printDeck() : Unit = {
-    for(i <- cards) {
-      println(i.value)
-    }
-  }
-  */
-
 }
 
 
