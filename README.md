@@ -2,6 +2,7 @@
 =====================================================
 
 [![Build Status](https://travis-ci.org/NRiedinger/htwg-scala-skyjo.svg?branch=master)](https://travis-ci.org/NRiedinger/htwg-scala-skyjo)
+[![Coverage Status](https://coveralls.io/repos/github/NRiedinger/htwg-scala-skyjo/badge.svg?branch=master)](https://coveralls.io/github/NRiedinger/htwg-scala-skyjo?branch=master)
 
 ### This is a card game within the context of the Software Engineering lecture at HTWG Konstanz
 
