@@ -1,5 +1,8 @@
 # Skyjo card game project 
 =====================================================
+
+[![Build Status](https://travis-ci.org/NRiedinger/htwg-scala-skyjo.svg?branch=master)](https://travis-ci.org/NRiedinger/htwg-scala-skyjo)
+
 ### This is a card game within the context of the Software Engineering lecture at HTWG Konstanz
 
 "Skyjo" is a card game by the game publisher [Magilano](https://magilano.eu/ "Magilano Website")
