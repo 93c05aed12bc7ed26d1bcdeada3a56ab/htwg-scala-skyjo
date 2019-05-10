@@ -18,6 +18,11 @@ class HandSpec extends WordSpec with Matchers{
     "should be a hand" in {
       hand should be(Hand())
     }
+    "values out of bound should be clamped" in {
+      hand.clamp(11, 0, 10) should be(10)
+      hand.clamp(-1, 0, 10) should be(0)
+      hand.clamp(5, 0, 10) should be (5)
+    }
   }}
 }
 
