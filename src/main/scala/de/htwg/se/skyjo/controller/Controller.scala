@@ -19,7 +19,7 @@ class Controller(var deck: Deck, player: Player) extends Observable {
     notifyObservers
   }
 
-  def uncoverCard() = {
+  def uncoverCard(): Unit = {
     player.hand.cards(player.hand.posY)(player.hand.posX).isUncovered = true
     notifyObservers
   }

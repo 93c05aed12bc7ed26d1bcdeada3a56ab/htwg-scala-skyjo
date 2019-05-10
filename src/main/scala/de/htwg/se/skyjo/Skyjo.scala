@@ -7,20 +7,23 @@ import de.htwg.se.skyjo.view.Tui
 
 object Skyjo {
 
-  val player = new Player("Hans")
-  val controller = new Controller(new Deck(), player)
+  val player = Player("Hans")
+  val controller = new Controller(Deck(), player)
   val tui = new Tui(controller, player)
   controller.notifyObservers
 
   def main(args: Array[String]): Unit = {
 
-    var input: String = ""
-
-    do{
-      input = readLine()
+    var input: String = args(0)
+    if(!input.isEmpty){
       tui.processInput(input)
     }
-    while(input != "q")
-
+    else{
+      do{
+        input = readLine()
+        tui.processInput(input)
+      }
+      while(input != "q")
+    }
   }
 }
