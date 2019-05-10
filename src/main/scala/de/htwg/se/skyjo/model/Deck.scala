@@ -35,5 +35,3 @@ case class Deck() {
     hand
   }
 }
-
-

@@ -1,6 +1,7 @@
 
 package de.htwg.se.skyjo.model
 
+import de.htwg.se.skyjo.model.{Card, Player}
 import org.scalatest._
 
 class PlayerSpec extends WordSpec with Matchers {

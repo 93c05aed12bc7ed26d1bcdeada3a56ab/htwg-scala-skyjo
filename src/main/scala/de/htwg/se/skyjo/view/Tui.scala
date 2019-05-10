@@ -16,9 +16,9 @@ class Tui(controller: Controller, player: Player) extends Observer {
       case "s" => controller.moveCursor("down")
       case "d" => controller.moveCursor("right")
       case "e" => controller.uncoverCard()
-      case _ => {}
+      case _ =>
     }
   }
 
-  override def update: Unit = println(player.hand.toString)
+  override def update: Boolean = {println(player.hand.toString); true}
 }

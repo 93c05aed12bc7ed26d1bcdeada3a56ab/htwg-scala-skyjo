@@ -12,8 +12,8 @@ case class Hand() {
   var posY: Int = 0
 
   for {
-      i <- 0 until Hand.ROWS
-      j <- 0 until Hand.COLUMNS
+    i <- 0 until Hand.ROWS
+    j <- 0 until Hand.COLUMNS
   } cards(i)(j) = Card()
 
   def summarize(): Int = {
@@ -25,7 +25,7 @@ case class Hand() {
     } if (cards(i)(j).isUncovered){
       sum += cards(i)(j).getValue.toInt
     }
-      sum
+    sum
   }
 
   override def toString: String = {
