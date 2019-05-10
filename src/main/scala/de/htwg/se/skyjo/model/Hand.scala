@@ -2,13 +2,18 @@ package de.htwg.se.skyjo.model
 
 case class Hand() {
 
+  def this(hand: Array[Array[Card]]) = {
+    this()
+    cards = hand
+  }
+
   var cards: Array[Array[Card]] = Array.ofDim[Card](Hand.ROWS, Hand.COLUMNS)
-  var posX: Int = 0;
-  var posY: Int = 0;
+  var posX: Int = 0
+  var posY: Int = 0
 
   for {
-      i <- 0 until Hand.ROWS
-      j <- 0 until Hand.COLUMNS
+    i <- 0 until Hand.ROWS
+    j <- 0 until Hand.COLUMNS
   } cards(i)(j) = Card()
 
   def summarize(): Int = {
@@ -20,12 +25,12 @@ case class Hand() {
     } if (cards(i)(j).isUncovered){
       sum += cards(i)(j).getValue.toInt
     }
-      sum
+    sum
   }
 
   override def toString: String = {
-    val coordsX = Array(2, 5, 8, 11)
-    val coordsY = Array(2, 4, 6)
+    val curCoordsX = Array(2, 5, 8, 11)
+    val curCoordsY = Array(2, 4, 6)
     var ret: String = ""
 
     var grid = Array(
@@ -39,8 +44,29 @@ case class Hand() {
       Array(' ', '└', '─', '─', '┴', '─', '─', '┴', '─', '─', '┴', '─', '─', '┘', '\n')
     )
 
-    grid(0)(coordsX(posX)) = '#'
-    grid(coordsY(posY))(0) = '#'
+    grid(0)(curCoordsX(posX)) = '#'
+    grid(curCoordsY(posY))(0) = '#'
+
+
+    for {
+      i <- 0 until Hand.ROWS
+      j <- 0 until Hand.COLUMNS
+    } {
+
+      val card: String = cards(i)(j).getValue
+
+      var str = "##"
+
+      card match {
+        case x if x == "#" =>
+        case x if x.toInt >= 0 && x.toInt < 10 => {
+          str = "0" + x
+        }
+        case _ => str = card
+      }
+      grid(curCoordsY(i))(curCoordsX(j)) = str(0)
+      grid(curCoordsY(i))(curCoordsX(j) + 1) = str(1)
+    }
 
     grid.foreach(row => row.foreach(c => ret += c))
 
@@ -50,11 +76,11 @@ case class Hand() {
   def move(dir: String): Unit ={
 
     dir match {
-      case _ =>
       case "right" => posX += 1
       case "left" => posX -= 1
       case "up" => posY -= 1
       case "down" => posY += 1
+      case _ =>
     }
 
     posX = clamp(posX, 0, Hand.COLUMNS - 1)

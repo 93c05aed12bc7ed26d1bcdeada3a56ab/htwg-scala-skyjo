@@ -20,6 +20,18 @@ case class Deck() {
     cards.remove(0)
     draw
   }
+
+  def drawHand(): Array[Array[Card]] = {
+    var hand: Array[Array[Card]] = Array.ofDim[Card](Hand.ROWS, Hand.COLUMNS)
+
+    for {
+      i <- 0 until Hand.ROWS
+      j <- 0 until Hand.COLUMNS
+    } {
+      hand(i)(j) = cards.head
+      cards.remove(0)
+    }
+
+    hand
+  }
 }
-
-
