@@ -2,10 +2,6 @@ package de.htwg.se.skyjo.model
 
 case class Hand() {
 
-  def this(hand: Array[Array[Card]]) = {
-    this()
-    cards = hand
-  }
 
   var cards: Array[Array[Card]] = Array.ofDim[Card](Hand.ROWS, Hand.COLUMNS)
   var posX: Int = 0
@@ -80,7 +76,6 @@ case class Hand() {
       case "left" => posX -= 1
       case "up" => posY -= 1
       case "down" => posY += 1
-      case _ =>
     }
 
     posX = clamp(posX, 0, Hand.COLUMNS - 1)

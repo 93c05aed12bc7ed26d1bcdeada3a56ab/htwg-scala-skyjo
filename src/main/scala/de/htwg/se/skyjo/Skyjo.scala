@@ -1,7 +1,7 @@
 package de.htwg.se.skyjo
 
 import de.htwg.se.skyjo.controller.Controller
-import de.htwg.se.skyjo.model.{Card, Deck, Player}
+import de.htwg.se.skyjo.model.{Deck, Player}
 import de.htwg.se.skyjo.view.Tui
 
 
@@ -14,7 +14,11 @@ object Skyjo {
 
   def main(args: Array[String]): Unit = {
 
-    var input: String = args(0)
+    var input: String= ""
+    if (args.length > 0) {
+      input = args(0)
+    }
+
     if(!input.isEmpty){
       tui.processInput(input)
     }
