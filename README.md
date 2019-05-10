@@ -8,6 +8,8 @@
 
 temp link: http://www.angespielt.de/kritiken/skyjo
 
+![alt text](https://github.com/NRiedinger/htwg-scala-skyjo/blob/master/skyjo_rules_german.jpg "Game rules in german")
+
 ## Goal
 
 Every player gets 12 numeric cards which they want to optimize during the game. The player with the smallest sum at the end wins this round.
