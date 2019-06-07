@@ -1,10 +1,12 @@
 package de.htwg.se.skyjo.controller
 
 import de.htwg.se.skyjo.model.{Deck, Hand, Player}
-import de.htwg.se.skyjo.util.Observable
+import de.htwg.se.skyjo.util.{Observable, UndoManager}
+
 
 class Controller(var deck: Deck, player: Player) extends Observable {
 
+  private val undoManager = new UndoManager
   createDeck()
   player.hand.cards = deck.drawHand()
 
@@ -14,13 +16,23 @@ class Controller(var deck: Deck, player: Player) extends Observable {
     notifyObservers
   }
 
-  def moveCursor(dir: String): Unit ={
+  def moveCursor(dir: String): Unit = {
     player.hand.move(dir)
     notifyObservers
   }
 
   def uncoverCard(): Unit = {
-    player.hand.cards(player.hand.posY)(player.hand.posX).isUncovered = true
+    undoManager.doStep(new UncoverCommand(player))
+    notifyObservers
+  }
+
+  def undo: Unit = {
+    undoManager.undoStep
+    notifyObservers
+  }
+
+  def redo: Unit = {
+    undoManager.redoStep
     notifyObservers
   }
 }
