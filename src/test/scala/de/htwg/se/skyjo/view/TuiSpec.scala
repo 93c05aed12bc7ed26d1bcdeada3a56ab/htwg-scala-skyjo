@@ -8,7 +8,7 @@ import org.scalatest._
 
 class TuiSpec extends WordSpec with Matchers {
   "A Tui" when { "new" should {
-    val player = new Player("Hans")
+    val player = new Player("Hans", new Deck())
     val tui = new Tui(new Controller(new Deck(),player), player)
 
     "do nothing on input 'q'" in {

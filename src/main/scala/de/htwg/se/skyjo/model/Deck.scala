@@ -4,6 +4,7 @@ import scala.collection.mutable.ListBuffer
 
 case class Deck() {
   var cards = new ListBuffer[Card]()
+  val discardPile = new scala.collection.mutable.ArrayStack[Card]
 
   for(i <- 0 until 150) {
     cards += Card(Card.possibleValues(i / 10))
@@ -14,12 +15,13 @@ case class Deck() {
     this
   }
 
-  def drawCard(): Card = {
+  def drawCard(): Unit = {
     val draw = cards.head
     draw.isUncovered = true
     cards.remove(0)
-    draw
+    discardPile.push(draw)
   }
+
 
   def drawHand(): Array[Array[Card]] = {
     var hand: Array[Array[Card]] = Array.ofDim[Card](Hand.ROWS, Hand.COLUMNS)
