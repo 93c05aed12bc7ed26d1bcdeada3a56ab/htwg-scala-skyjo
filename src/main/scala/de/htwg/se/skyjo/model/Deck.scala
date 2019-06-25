@@ -22,6 +22,12 @@ case class Deck() {
     discardPile.push(draw)
   }
 
+  def returnCard(): Unit = {
+    val draw = discardPile.pop()
+    draw.isUncovered = false
+    cards.insert(0, draw)
+  }
+
 
   def drawHand(): Array[Array[Card]] = {
     var hand: Array[Array[Card]] = Array.ofDim[Card](Hand.ROWS, Hand.COLUMNS)

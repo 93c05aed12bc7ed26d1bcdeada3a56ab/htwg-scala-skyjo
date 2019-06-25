@@ -15,9 +15,16 @@ class Tui(controller: Controller, player: Player) extends Observer {
       case "a" => controller.moveCursor("left")
       case "s" => controller.moveCursor("down")
       case "d" => controller.moveCursor("right")
-      case "e" => controller.uncoverCard()
+      case "e" => {
+        if (player.hand.cards(player.hand.posY)(player.hand.posX).isUncovered){
+          controller.tradeCard
+        } else {
+          controller.uncoverCard()
+        }
+      }
       case "u" => controller.undo
       case "r" => controller.redo
+      case "c" => controller.drawCard
       case _ =>
     }
   }

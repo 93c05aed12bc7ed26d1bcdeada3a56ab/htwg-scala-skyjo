@@ -10,6 +10,7 @@ case class Player(name: String, deck: Deck) {
   val controller = new Controller(deck, Player.this)
   val tui = new Tui(controller, Player.this)
   controller.notifyObservers
+  var stillMyTurn = false
 
 
   //TODO eventuell sofort printen statt String zurück

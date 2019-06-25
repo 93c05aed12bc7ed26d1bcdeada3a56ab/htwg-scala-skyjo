@@ -33,10 +33,8 @@ object Skyjo {
 
     do {
 
-      // TODO wenn redo/undo der selbe player nochmal
       // TODO wenn auf aufgedeckte karte 'e' dann tauschen mit discardpile
       // TODO karte ziehen mit einer taste, dann der selbe player nochmal
-      // TODO wenn man sich bewegt wieder der selbe player
 
       if (deck.discardPile.nonEmpty){println("Ablagestapel: " + deck.discardPile.top.value)}
       println("Karten im Deck: " + deck.cards.length)
@@ -56,6 +54,10 @@ object Skyjo {
     val input = scala.io.StdIn.readLine()
     players(turn).tui.processInput(input)
 
-    turn + 1
+    if (players(turn).stillMyTurn) {
+      turn
+    } else {
+      turn + 1
+    }
   }
 }
