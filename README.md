@@ -1,8 +1,8 @@
 # Skyjo card game project 
 =====================================================
 
-[![Build Status](https://travis-ci.org/NRiedinger/htwg-scala-skyjo.svg?branch=master)](https://travis-ci.org/NRiedinger/htwg-scala-skyjo)
-[![Coverage Status](https://coveralls.io/repos/github/NRiedinger/htwg-scala-skyjo/badge.svg?branch=master)](https://coveralls.io/github/NRiedinger/htwg-scala-skyjo?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/93c05aed12bc7ed26d1bcdeada3a56ab/htwg-scala-skyjo/badge.svg?branch=master)](https://coveralls.io/github/93c05aed12bc7ed26d1bcdeada3a56ab/htwg-scala-skyjo?branch=master)
+[![Build Status](https://travis-ci.org/93c05aed12bc7ed26d1bcdeada3a56ab/htwg-scala-skyjo.svg?branch=master)](https://travis-ci.org/93c05aed12bc7ed26d1bcdeada3a56ab/htwg-scala-skyjo)
 
 ### This is a card game within the context of the Software Engineering lecture at HTWG Konstanz
 
