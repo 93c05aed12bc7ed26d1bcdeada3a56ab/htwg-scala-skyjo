@@ -1,6 +1,7 @@
 package de.htwg.se.skyjo
 
-import de.htwg.se.skyjo.model.{Card, Deck, Player}
+import de.htwg.se.skyjo.model.{Deck, Player}
+import de.htwg.se.skyjo.view.Tui
 
 
 object Skyjo {
@@ -11,8 +12,6 @@ object Skyjo {
 
     var players = scala.collection.mutable.ArrayBuffer.empty[Player]
     var num_players : Int = 0
-    var turn : Int = 0
-    var input: String = ""
 
     if (args.length > 0) {
       num_players = args(0).toInt
@@ -24,40 +23,14 @@ object Skyjo {
     }
 
     for (i <- 0 until num_players){
-        println("Name of Player " + (i+1) + "?")
-        val name = scala.io.StdIn.readLine()
-        players += Player(name, deck.shuffle())
+      println("Name of Player " + (i + 1) + "?")
+      val name = scala.io.StdIn.readLine()
+      players += Player(name, deck.shuffle())
     }
 
-    deck.drawCard()
+    val tui = new Tui(players)
+    tui.processInput()
 
-    do {
-
-      // TODO wenn auf aufgedeckte karte 'e' dann tauschen mit discardpile
-      // TODO karte ziehen mit einer taste, dann der selbe player nochmal
-
-      if (deck.discardPile.nonEmpty){println("Ablagestapel: " + deck.discardPile.top.value)}
-      println("Karten im Deck: " + deck.cards.length)
-
-      turn = playerTurn(turn, players)
-
-      if (turn == num_players) {
-        turn = 0
-      }
-    }
-    while (input != "q")
-    //TODO macht momentan gar nix bei q
   }
 
-  def playerTurn(turn: Int, players : scala.collection.mutable.ArrayBuffer[Player]): Int ={
-    println("Your Turn: " + players(turn).name)
-    val input = scala.io.StdIn.readLine()
-    players(turn).tui.processInput(input)
-
-    if (players(turn).stillMyTurn) {
-      turn
-    } else {
-      turn + 1
-    }
-  }
 }
