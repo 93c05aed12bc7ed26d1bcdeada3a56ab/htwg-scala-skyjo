@@ -24,9 +24,17 @@ case class Hand() {
     sum
   }
 
-  //def sumUncovered() : Int {
-    //TODO durch iterieren .isUncovered, vllt damit man schauen kann wenn zwei karten aufgedeckt dann geht das spiel los sonst erst2 karten aufdecken
-  //}
+  def sumUncovered() : Int = {
+    var sumUncovered: Int = 0
+
+    for {
+      i <- 0 until Hand.ROWS
+      j <- 0 until Hand.COLUMNS
+    } if (cards(i)(j).isUncovered){
+      sumUncovered += 1
+    }
+    sumUncovered
+  }
 
   override def toString: String = {
     val curCoordsX = Array(2, 5, 8, 11)
