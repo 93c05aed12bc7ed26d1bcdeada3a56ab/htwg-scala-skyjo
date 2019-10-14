@@ -42,4 +42,13 @@ case class Deck() {
 
     hand
   }
+
+  def sumCardInDeck(): Int = {
+    cards.length
+  }
+
+  def discardPileTopCard(): Int = {
+    discardPile.top.value
+  }
+
 }
