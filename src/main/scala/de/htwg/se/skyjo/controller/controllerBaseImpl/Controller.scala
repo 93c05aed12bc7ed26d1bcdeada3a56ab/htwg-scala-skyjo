@@ -1,20 +1,27 @@
-package de.htwg.se.skyjo.controller
+package de.htwg.se.skyjo.controller.controllerBaseImpl
 
-import de.htwg.se.skyjo.model.{Deck, Player}
-import de.htwg.se.skyjo.util.{Observable, UndoManager}
+import com.google.inject.{Guice, Inject}
+import de.htwg.se.skyjo.SkyjoModule
+import de.htwg.se.skyjo.controller.ControllerInterface
+import de.htwg.se.skyjo.model.deckComponent.deckBaseImpl.Deck
+import de.htwg.se.skyjo.model.playerComponent
+import de.htwg.se.skyjo.model.playerComponent.Player
+import de.htwg.se.skyjo.util.{Observer, UndoManager}
 
 
-class Controller() extends Observable {
+class Controller @Inject() extends ControllerInterface with Observer {
 
-  private val undoManager = new UndoManager
-  var deck = new Deck()
+  val injector = Guice.createInjector(new SkyjoModule)
+
+  val undoManager = new UndoManager
+  var deck = injector.getInstance(classOf[Deck])
   deck.shuffle()
   var players = scala.collection.mutable.ArrayBuffer.empty[Player]
   var turn = 0
   var shutdown = false
 
   def createPlayer(name: String): Unit = {
-    players += Player(name, deck)
+    players += playerComponent.Player(name, deck)
     players.last.hand.cards = deck.drawHand()
     add(players.last)
   }
@@ -72,6 +79,10 @@ class Controller() extends Observable {
     }
     sb.append("-------------------------------------------------\n")
     sb.toString()
+  }
+
+  override def update: Boolean = {
+    true
   }
 
 }

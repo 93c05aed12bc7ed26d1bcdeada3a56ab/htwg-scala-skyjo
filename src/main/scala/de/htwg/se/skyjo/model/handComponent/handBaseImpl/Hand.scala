@@ -1,6 +1,9 @@
-package de.htwg.se.skyjo.model
+package de.htwg.se.skyjo.model.handComponent.handBaseImpl
 
-case class Hand() {
+import de.htwg.se.skyjo.model.cardComponent.cardBaseImpl.Card
+import de.htwg.se.skyjo.model.handComponent.HandInterface
+
+case class Hand() extends HandInterface {
 
 
   var cards: Array[Array[Card]] = Array.ofDim[Card](Hand.ROWS, Hand.COLUMNS)

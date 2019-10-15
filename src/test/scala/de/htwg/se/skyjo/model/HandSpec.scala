@@ -1,6 +1,7 @@
 package de.htwg.se.skyjo.model
 
-import de.htwg.se.skyjo.model.{Card, Hand}
+import de.htwg.se.skyjo.model.cardComponent.cardBaseImpl.Card
+import de.htwg.se.skyjo.model.handComponent.handBaseImpl.Hand
 import org.scalatest._
 
 class HandSpec extends WordSpec with Matchers{

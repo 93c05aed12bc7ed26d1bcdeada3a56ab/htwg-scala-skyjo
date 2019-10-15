@@ -1,7 +1,7 @@
-package de.htwg.se.skyjo.controller
+package de.htwg.se.skyjo.controller.controllerBaseImpl
 
+import de.htwg.se.skyjo.model.playerComponent.Player
 import de.htwg.se.skyjo.util.Command
-import de.htwg.se.skyjo.model.Player
 
 class UncoverCommand(player: Player) extends Command {
   override def doStep: Unit = player.hand.cards(player.hand.posY)(player.hand.posX).isUncovered = true

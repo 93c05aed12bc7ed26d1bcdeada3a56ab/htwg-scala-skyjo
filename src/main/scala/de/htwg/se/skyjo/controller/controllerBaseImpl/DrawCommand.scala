@@ -1,6 +1,6 @@
-package de.htwg.se.skyjo.controller
+package de.htwg.se.skyjo.controller.controllerBaseImpl
 
-import de.htwg.se.skyjo.model.Player
+import de.htwg.se.skyjo.model.playerComponent.Player
 import de.htwg.se.skyjo.util.Command
 
 class DrawCommand(player: Player) extends Command {

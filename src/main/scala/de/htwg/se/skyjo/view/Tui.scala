@@ -1,7 +1,7 @@
 package de.htwg.se.skyjo.view
 
-import de.htwg.se.skyjo.controller.Controller
-import de.htwg.se.skyjo.model.Player
+import de.htwg.se.skyjo.controller.controllerBaseImpl.Controller
+import de.htwg.se.skyjo.model.playerComponent.Player
 
 class Tui(controller: Controller) {
 

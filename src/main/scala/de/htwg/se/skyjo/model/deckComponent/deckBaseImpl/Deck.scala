@@ -1,12 +1,16 @@
-package de.htwg.se.skyjo.model
+package de.htwg.se.skyjo.model.deckComponent.deckBaseImpl
+
+import de.htwg.se.skyjo.model.cardComponent.cardBaseImpl.Card
+import de.htwg.se.skyjo.model.deckComponent.DeckInterface
+import de.htwg.se.skyjo.model.handComponent.handBaseImpl.Hand
 
 import scala.collection.mutable.ListBuffer
 
-case class Deck() {
-  var cards = new ListBuffer[Card]()
+case class Deck() extends DeckInterface {
   val discardPile = new scala.collection.mutable.ArrayStack[Card]
+  var cards = new ListBuffer[Card]()
 
-  for(i <- 0 until 150) {
+  for (i <- 0 until 150) {
     cards += Card(Card.possibleValues(i / 10))
   }
 
@@ -30,6 +34,7 @@ case class Deck() {
 
 
   def drawHand(): Array[Array[Card]] = {
+
     var hand: Array[Array[Card]] = Array.ofDim[Card](Hand.ROWS, Hand.COLUMNS)
 
     for {

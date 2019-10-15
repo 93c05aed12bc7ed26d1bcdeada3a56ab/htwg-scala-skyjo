@@ -1,6 +1,6 @@
 package de.htwg.se.skyjo.model
 
-import de.htwg.se.skyjo.model.Card
+import de.htwg.se.skyjo.model.cardComponent.cardBaseImpl.Card
 import org.scalatest._
 
 class CardSpec extends WordSpec with Matchers{

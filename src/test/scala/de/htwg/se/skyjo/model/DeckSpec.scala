@@ -1,7 +1,8 @@
 
 package de.htwg.se.skyjo.model
 
-import de.htwg.se.skyjo.model.{Card, Deck}
+import de.htwg.se.skyjo.model.cardComponent.cardBaseImpl.Card
+import de.htwg.se.skyjo.model.deckComponent.deckBaseImpl.Deck
 import org.scalatest._
 
 class DeckSpec extends WordSpec with Matchers {
