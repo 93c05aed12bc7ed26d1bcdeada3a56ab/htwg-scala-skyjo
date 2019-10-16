@@ -14,26 +14,26 @@ case class Deck() extends DeckInterface {
     cards += Card(Card.possibleValues(i / 10))
   }
 
-  def shuffle(): Deck = {
+  override def shuffle(): Deck = {
     cards = scala.util.Random.shuffle(cards)
     this
   }
 
-  def drawCard(): Unit = {
+  override def drawCard(): Unit = {
     val draw = cards.head
     draw.isUncovered = true
     cards.remove(0)
     discardPile.push(draw)
   }
 
-  def returnCard(): Unit = {
+  override def returnCard(): Unit = {
     val draw = discardPile.pop()
     draw.isUncovered = false
     cards.insert(0, draw)
   }
 
 
-  def drawHand(): Array[Array[Card]] = {
+  override def drawHand(): Array[Array[Card]] = {
 
     var hand: Array[Array[Card]] = Array.ofDim[Card](Hand.ROWS, Hand.COLUMNS)
 
@@ -48,11 +48,11 @@ case class Deck() extends DeckInterface {
     hand
   }
 
-  def sumCardInDeck(): Int = {
+  override def sumCardInDeck(): Int = {
     cards.length
   }
 
-  def discardPileTopCard(): Int = {
+  override def discardPileTopCard(): Int = {
     discardPile.top.value
   }
 

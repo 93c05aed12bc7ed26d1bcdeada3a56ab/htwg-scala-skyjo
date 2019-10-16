@@ -15,7 +15,7 @@ case class Hand() extends HandInterface {
     j <- 0 until Hand.COLUMNS
   } cards(i)(j) = Card()
 
-  def summarize(): Int = {
+  override def summarize(): Int = {
     var sum: Int = 0
 
     for {
@@ -27,7 +27,7 @@ case class Hand() extends HandInterface {
     sum
   }
 
-  def sumUncovered() : Int = {
+  override def sumUncovered() : Int = {
     var sumUncovered: Int = 0
 
     for {
@@ -84,7 +84,7 @@ case class Hand() extends HandInterface {
     ret
   }
 
-  def move(dir: String): Unit ={
+  override def move(dir: String): Unit ={
 
     dir match {
       case "right" => posX += 1
@@ -97,7 +97,7 @@ case class Hand() extends HandInterface {
     posY = clamp(posY, 0, Hand.ROWS - 1)
   }
 
-  def clamp(value: Int, min: Int, max: Int): Int ={
+  override def clamp(value: Int, min: Int, max: Int): Int ={
     if ( value < min) min else if (value > max) max else value
   }
 }
