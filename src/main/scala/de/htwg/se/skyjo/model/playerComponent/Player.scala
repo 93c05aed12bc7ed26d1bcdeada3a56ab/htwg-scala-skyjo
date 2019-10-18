@@ -9,12 +9,16 @@ case class Player(name: String, deck: Deck) extends Observer {
   var hand = Hand()
   var stillMyTurn = false
   var canDrawCard = true
-  val playerString = name + "\n" +
+  var playerString = name + "\n" +
     "Summe der Hand: " + hand.summarize() + "\n" +
-    hand.toString
+    hand.toString()
 
   override def update: Boolean = {
-    //println(playerString)
+    
+    playerString = name + "\n" +
+      "Summe der Hand: " + hand.summarize() + "\n" +
+      hand.toString()
+
     true
   }
 

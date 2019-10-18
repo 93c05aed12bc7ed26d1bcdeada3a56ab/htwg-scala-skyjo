@@ -35,6 +35,8 @@ class Tui(controller: Controller) {
 
       playerTurn(controller.turn)
 
+      println(controller.boardToString())
+
       if (controller.turn == controller.players.length) {
         controller.turn = 0
       }
@@ -96,7 +98,7 @@ class Tui(controller: Controller) {
           case _                            => player.stillMyTurn = true
         }
     }
-    println(controller.boardToString())
+    //println(controller.boardToString())
   }
 
 }

@@ -36,36 +36,51 @@ class Controller @Inject() extends ControllerInterface with Observer {
     player.hand.posX = posX
     player.hand.posY = posY
     player.stillMyTurn = true
+    notifyObservers
   }
 
   override def uncoverCard(player: Player): Unit = {
     undoManager.doStep(new UncoverCommand(player))
     player.stillMyTurn = false
     player.canDrawCard = true
+    notifyObservers
   }
 
   override def undo(player: Player): Unit = {
     undoManager.undoStep
     player.stillMyTurn = true
     player.canDrawCard = true
+    notifyObservers
   }
 
   override def redo(player: Player): Unit = {
     undoManager.redoStep
     player.stillMyTurn = true
     player.canDrawCard = true
+    notifyObservers
   }
 
   override def tradeCard(player: Player): Unit = {
     undoManager.doStep(new TradeCommand(player))
     player.stillMyTurn = false
     player.canDrawCard = true
+    notifyObservers
   }
 
   override def drawCard(player: Player): Unit = {
     undoManager.doStep(new DrawCommand(player))
     player.stillMyTurn = true
     player.canDrawCard = false
+    notifyObservers
+  }
+
+  override def checkFullUncovered(): Boolean = {
+    for (i <- 0 until players.length) {
+      if (players(i).hand.sumUncovered() == 12) {
+        true
+      }
+    }
+    false
   }
 
   override def boardToString() : String = {
