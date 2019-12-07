@@ -2,7 +2,7 @@ package de.htwg.se.skyjo.controller.controllerBaseImpl
 
 import com.google.inject.{Guice, Inject}
 import de.htwg.se.skyjo.SkyjoModule
-import de.htwg.se.skyjo.controller.ControllerInterface
+import de.htwg.se.skyjo.controller.{ControllerInterface, GameStatus}
 import de.htwg.se.skyjo.model.deckComponent.deckBaseImpl.Deck
 import de.htwg.se.skyjo.model.playerComponent
 import de.htwg.se.skyjo.model.playerComponent.Player
@@ -11,14 +11,29 @@ import de.htwg.se.skyjo.util.{Observer, UndoManager}
 
 class Controller @Inject() extends ControllerInterface with Observer {
 
-  val injector = Guice.createInjector(new SkyjoModule)
+  var injector = Guice.createInjector(new SkyjoModule)
 
-  val undoManager = new UndoManager
+  var undoManager = new UndoManager
   var deck = injector.getInstance(classOf[Deck])
   deck.shuffle()
   var players = scala.collection.mutable.ArrayBuffer.empty[Player]
   var turn = 0
   var shutdown = false
+  var gamestatus = GameStatus.FIRSTROUND
+  add(this)
+
+  def newGame(): Unit = {
+    subscribers = Vector()
+    injector = Guice.createInjector(new SkyjoModule)
+    undoManager = new UndoManager
+    deck = injector.getInstance(classOf[Deck])
+    deck.shuffle()
+    players = scala.collection.mutable.ArrayBuffer.empty[Player]
+    turn = 0
+    shutdown = false
+    gamestatus = GameStatus.FIRSTROUND
+    add(this)
+  }
 
   override def createPlayer(name: String): Unit = {
     players += playerComponent.Player(name, deck)
@@ -83,7 +98,12 @@ class Controller @Inject() extends ControllerInterface with Observer {
     false
   }
 
-  override def boardToString() : String = {
+  override def update: Boolean = {
+    println(boardToString())
+    true
+  }
+
+  override def boardToString(): String = {
     val sb = new StringBuilder()
     if (deck.discardPile.nonEmpty) {
       sb.append("Ablagestapel: " + deck.discardPileTopCard() + "\n")
@@ -96,8 +116,13 @@ class Controller @Inject() extends ControllerInterface with Observer {
     sb.toString()
   }
 
-  override def update: Boolean = {
-    true
+  def checkUncovered(player: Player): Boolean = {
+    if (player.hand.sumUncovered() == 12) {
+      true
+    } else {
+      false
+    }
   }
+
 
 }

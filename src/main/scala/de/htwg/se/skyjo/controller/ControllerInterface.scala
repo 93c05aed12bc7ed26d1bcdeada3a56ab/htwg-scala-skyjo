@@ -21,7 +21,7 @@ trait ControllerInterface extends Observable {
 
   def drawCard(player: Player): Unit
 
-  def checkFullUncovered(): Boolean
+  def checkFullUncovered: Boolean
 
   def boardToString: String
 

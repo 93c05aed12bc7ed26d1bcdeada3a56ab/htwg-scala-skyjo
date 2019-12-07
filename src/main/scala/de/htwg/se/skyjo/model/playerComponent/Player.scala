@@ -6,10 +6,11 @@ import de.htwg.se.skyjo.util.Observer
 
 case class Player(name: String, deck: Deck) extends Observer {
 
+  var points = 0
   var hand = Hand()
   var stillMyTurn = false
   var canDrawCard = true
-  var playerString = name + "\n" +
+  var playerString: String = name + "\n" +
     "Summe der Hand: " + hand.summarize() + "\n" +
     hand.toString()
 

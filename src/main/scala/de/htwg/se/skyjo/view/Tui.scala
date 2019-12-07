@@ -35,7 +35,7 @@ class Tui(controller: Controller) {
 
       playerTurn(controller.turn)
 
-      println(controller.boardToString())
+      //println(controller.boardToString())
 
       if (controller.turn == controller.players.length) {
         controller.turn = 0
@@ -65,6 +65,10 @@ class Tui(controller: Controller) {
 
   def processInputLine(input: String, player: Player): Unit = {
     input match {
+      case "n" => {
+        controller.newGame()
+        start()
+      }
       case "q" => controller.shutdown = true
       case "w" => controller.moveCursor("up", player)
       case "a" => controller.moveCursor("left", player)
