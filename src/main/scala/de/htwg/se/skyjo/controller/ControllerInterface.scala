@@ -1,28 +1,55 @@
 package de.htwg.se.skyjo.controller
 
+import de.htwg.se.skyjo.model.deckComponent.deckBaseImpl.Deck
 import de.htwg.se.skyjo.model.playerComponent.Player
 import de.htwg.se.skyjo.util.Observable
 
-trait ControllerInterface extends Observable {
+import scala.swing.Publisher
+
+trait ControllerInterface extends Observable with Publisher {
+
+  var turn: Int
+
+  var deck: Deck
+
+  var players: scala.collection.mutable.ArrayBuffer[Player]
+
+  var winner: Int
+
+  def newGame(): Unit
 
   def createPlayer(name: String): Unit
 
-  def moveCursor(dir: String, player: Player): Unit
+  def uncoverCard(player: Player, posX: Int, posY: Int): Unit
 
-  def setCursor(posX: Int, posY: Int, player: Player): Unit
+  def undo: Unit
 
-  def uncoverCard(player: Player): Unit
+  def redo: Unit
 
-  def undo(player: Player): Unit
+  def tradeCard(player: Player, posX: Int, posY: Int): Unit
 
-  def redo(player: Player): Unit
-
-  def tradeCard(player: Player): Unit
-
-  def drawCard(player: Player): Unit
-
-  def checkFullUncovered: Boolean
+  def drawCard: Unit
 
   def boardToString: String
 
+  def doMove(posY: Int, posX: Int, player: Int): Unit
+
+  def shutdown: Unit
+
+  def uncoverAll: Unit
+
+  def newRound: Unit
 }
+
+import scala.swing.event.Event
+
+class BoardChanged extends Event
+
+class CandidatesChanged extends Event
+
+class NewRound extends Event
+
+class GameOver extends Event
+
+class Shutdown extends Event
+

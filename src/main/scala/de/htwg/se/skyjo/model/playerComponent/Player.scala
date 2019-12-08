@@ -12,12 +12,13 @@ case class Player(name: String, deck: Deck) extends Observer {
   var canDrawCard = true
   var playerString: String = name + "\n" +
     "Summe der Hand: " + hand.summarize() + "\n" +
+    "Punkte: " + points + "\n" +
     hand.toString()
 
   override def update: Boolean = {
-    
     playerString = name + "\n" +
       "Summe der Hand: " + hand.summarize() + "\n" +
+      "Punkte: " + points + "\n" +
       hand.toString()
 
     true

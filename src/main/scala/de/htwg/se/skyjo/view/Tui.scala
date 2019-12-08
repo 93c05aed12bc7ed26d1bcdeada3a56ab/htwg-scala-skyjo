@@ -1,108 +1,103 @@
 package de.htwg.se.skyjo.view
 
-import de.htwg.se.skyjo.controller.controllerBaseImpl.Controller
-import de.htwg.se.skyjo.model.playerComponent.Player
+import java.io.BufferedReader
 
-class Tui(controller: Controller) {
+import de.htwg.se.skyjo.controller.{BoardChanged, CandidatesChanged, ControllerInterface, GameOver, NewRound, Shutdown}
 
-  def start(): Unit = {
+import scala.swing.Reactor
+
+class Tui(controller: ControllerInterface) extends Reactor {
+
+  var stopProcessingInput = false
+  listenTo(controller)
+
+  def start(input: BufferedReader): Unit = {
     println("How many Players will play?")
-    var num_players = scala.io.StdIn.readLine().toInt
+    val num_players = input.readLine().toInt
     // TODO error handling
 
     for (i <- 0 until num_players){
       println("Name of Player " + (i + 1) + "?")
-      val name = scala.io.StdIn.readLine()
+      val name = input.readLine()
       controller.createPlayer(name)
     }
-    processInput()
+    processInput(input)
   }
 
-  def start(num_players : Int): Unit = {
+  def start(num_players: Int, input: BufferedReader): Unit = {
     for (i <- 0 until num_players){
       println("Name of Player " + (i + 1) + "?")
-      val name = scala.io.StdIn.readLine()
+      val name = input.readLine()
       controller.createPlayer(name)
     }
-    processInput()
+    processInput(input)
   }
 
-  def processInput(): Unit = {
+  def processInput(input: BufferedReader): Unit = {
 
     controller.deck.drawCard()
-
-    do {
-
-      playerTurn(controller.turn)
-
-      //println(controller.boardToString())
-
-      if (controller.turn == controller.players.length) {
-        controller.turn = 0
+    println("Du bist an der Reihe: " + controller.players(controller.turn).name)
+    while (!stopProcessingInput) {
+      if (input.ready()) {
+        val line = input.readLine()
+        processInputLine(line)
+        if (!stopProcessingInput) {
+          println("Du bist an der Reihe: " + controller.players(controller.turn).name)
+        }
+      } else {
+        Thread.sleep(200)
       }
     }
-    while (controller.shutdown != true)
   }
 
-  //TODO die karte vom ablagestapel tauschen mit dem spielfeld oder
-  //TODO karte ziehen und die tauschen mit dem spielfeld oder
+  //TODO die karte vom ablagestapel tauschen mit dem spielfeld(offen oder verdeckte) oder
+  //TODO karte ziehen und die tauschen mit dem spielfeld(offen oder verdeckte) oder
   //TODO eine karte umdrehen
 
-  //TODO spielrunden ende wenn einer alle karten aufgedeckt hat (sumUncovered == 12) dann dürfen alle nocheinmal eine runde spielen
-  //TODO der spieler der zu gemacht hat muss die wenigsten punkte haben sonst werden seine punkte addiert
-  //TODO wenn Punkte über 100 ist, ist das spiel vorbei und der mit den wenigsten punkten gewinnt das spiel
+  //TODO nach den zwei aufgedeckten karten darf der mit der höchsten augensumme anfangen
+  //TODO der spieler der die aktuelle spielrunde beendet hat darf die nächste runde anfangen
+
   //TODO sonder regel wenn in einer senktrechten reihe alle karten gleich sind kann man die ganze reihe auf den ablagestape legen (kann auch beim auswerten passieren)
 
-  def playerTurn(turn: Int): Unit = {
-    println("Du bist an der Reihe: " + controller.players(turn).name)
-    val input = scala.io.StdIn.readLine()
-    processInputLine(input, controller.players(turn))
-
-    if (!controller.players(turn).stillMyTurn) {
-      controller.turn += 1
-    }
-  }
-
-  def processInputLine(input: String, player: Player): Unit = {
+  def processInputLine(input: String): Unit = {
     input match {
       case "n" => {
         controller.newGame()
-        start()
+        start(new BufferedReader(Console.in))
       }
-      case "q" => controller.shutdown = true
-      case "w" => controller.moveCursor("up", player)
-      case "a" => controller.moveCursor("left", player)
-      case "s" => controller.moveCursor("down", player)
-      case "d" => controller.moveCursor("right", player)
-      case "e" => {
-        if (player.hand.cards(player.hand.posY)(player.hand.posX).isUncovered) {
-          if (player.hand.sumUncovered() > 1) {
-            controller.tradeCard(player)
-          } else player.stillMyTurn = true
-        } else {
-          controller.uncoverCard(player)
-        }
-      }
-      case "u" => controller.undo(player)
-      case "r" => controller.redo(player)
-      case "c" => {
-        if (player.hand.sumUncovered() > 1 && player.canDrawCard == true) {
-          controller.drawCard(player)
-        } else player.stillMyTurn = true
-      }
+      case "q" => controller.shutdown
+      case "u" => controller.undo
+      case "r" => controller.redo
+      case "c" => controller.drawCard
+      case "a" => controller.uncoverAll
       case _ =>
         input.toList.filter(c => c != ' ').map(c => c.toString) match {
-          case posX :: posY :: Nil          => controller.setCursor(posX.toInt, posY.toInt, player)
-          //TODO ErrorHandling
-          case posX :: posY :: input :: Nil => {
-            controller.setCursor(posX.toInt, posY.toInt, player)
-            processInputLine(input, player)
-          }
-          //TODO ErrorHandling
-          case _                            => player.stillMyTurn = true
+          case posY :: posX :: Nil => controller.doMove(posY.toInt, posX.toInt, controller.turn)
+          case _ =>
         }
     }
-    //println(controller.boardToString())
   }
+
+  reactions += {
+    case event: BoardChanged => println(controller.boardToString)
+    case event: CandidatesChanged => println(controller.boardToString)
+    case event: NewRound => newRound
+    case event: GameOver => newGame
+    case event: Shutdown => stopProcessingInput = true
+  }
+
+  def newRound: Unit = {
+    controller.newRound
+    println("Neue Runde:")
+    println("Du bist an der Reihe: " + controller.players(controller.turn).name)
+  }
+
+  def newGame: Unit = {
+    println("Glückwunsch " + controller.players(controller.winner).name + "! Du hast Gewonnen!")
+    controller.newGame()
+    println("Neues Spiel:")
+    start(new BufferedReader(Console.in))
+  }
+
 
 }

@@ -2,7 +2,7 @@ package de.htwg.se.skyjo.controller.controllerBaseImpl
 
 import com.google.inject.{Guice, Inject}
 import de.htwg.se.skyjo.SkyjoModule
-import de.htwg.se.skyjo.controller.{ControllerInterface, GameStatus}
+import de.htwg.se.skyjo.controller.{BoardChanged, CandidatesChanged, ControllerInterface, GameOver, NewRound, Shutdown}
 import de.htwg.se.skyjo.model.deckComponent.deckBaseImpl.Deck
 import de.htwg.se.skyjo.model.playerComponent
 import de.htwg.se.skyjo.model.playerComponent.Player
@@ -18,8 +18,7 @@ class Controller @Inject() extends ControllerInterface with Observer {
   deck.shuffle()
   var players = scala.collection.mutable.ArrayBuffer.empty[Player]
   var turn = 0
-  var shutdown = false
-  var gamestatus = GameStatus.FIRSTROUND
+  var winner = -1
   add(this)
 
   def newGame(): Unit = {
@@ -30,8 +29,6 @@ class Controller @Inject() extends ControllerInterface with Observer {
     deck.shuffle()
     players = scala.collection.mutable.ArrayBuffer.empty[Player]
     turn = 0
-    shutdown = false
-    gamestatus = GameStatus.FIRSTROUND
     add(this)
   }
 
@@ -39,68 +36,68 @@ class Controller @Inject() extends ControllerInterface with Observer {
     players += playerComponent.Player(name, deck)
     players.last.hand.cards = deck.drawHand()
     add(players.last)
+    publish(new CandidatesChanged)
   }
 
-  override def moveCursor(dir: String, player: Player): Unit = {
-    player.hand.move(dir)
-    player.stillMyTurn = true
-    notifyObservers
-  }
-
-  override def setCursor(posX : Int, posY : Int, player: Player): Unit = {
-    player.hand.posX = posX
-    player.hand.posY = posY
-    player.stillMyTurn = true
-    notifyObservers
-  }
-
-  override def uncoverCard(player: Player): Unit = {
-    undoManager.doStep(new UncoverCommand(player))
-    player.stillMyTurn = false
-    player.canDrawCard = true
-    notifyObservers
-  }
-
-  override def undo(player: Player): Unit = {
+  override def undo(): Unit = {
     undoManager.undoStep
-    player.stillMyTurn = true
-    player.canDrawCard = true
+    players(turn).stillMyTurn = true
+    players(turn).canDrawCard = true
     notifyObservers
+    publish(new BoardChanged)
   }
 
-  override def redo(player: Player): Unit = {
+  override def redo(): Unit = {
     undoManager.redoStep
-    player.stillMyTurn = true
-    player.canDrawCard = true
+    players(turn).stillMyTurn = true
+    players(turn).canDrawCard = true
     notifyObservers
+    publish(new BoardChanged)
   }
 
-  override def tradeCard(player: Player): Unit = {
-    undoManager.doStep(new TradeCommand(player))
-    player.stillMyTurn = false
-    player.canDrawCard = true
-    notifyObservers
-  }
+  override def drawCard(): Unit = {
 
-  override def drawCard(player: Player): Unit = {
-    undoManager.doStep(new DrawCommand(player))
-    player.stillMyTurn = true
-    player.canDrawCard = false
-    notifyObservers
-  }
-
-  override def checkFullUncovered(): Boolean = {
-    for (i <- 0 until players.length) {
-      if (players(i).hand.sumUncovered() == 12) {
-        true
-      }
+    if (players(turn).hand.sumUncovered() > 1 && players(turn).canDrawCard == true) {
+      undoManager.doStep(new DrawCommand(players(turn)))
+      players(turn).stillMyTurn = true
+      players(turn).canDrawCard = false
+      notifyObservers
+      publish(new BoardChanged)
+    } else {
+      players(turn).stillMyTurn = true
     }
-    false
   }
 
   override def update: Boolean = {
-    println(boardToString())
+    whichTurn()
+    checkEnd()
     true
+  }
+
+  def whichTurn(): Unit = {
+    if (!players(turn).stillMyTurn) {
+      turn += 1
+    }
+    if (turn == players.length) {
+      turn = 0
+    }
+  }
+
+  def checkEnd(): Unit = {
+    if (checkUncovered()) {
+      val doublePoint = lowestPoints
+      for (i <- 0 until players.length) {
+        if (doublePoint && i == turn) {
+          players(i).points += (players(i).hand.summarizeAll() * 2)
+        } else {
+          players(i).points += players(i).hand.summarizeAll()
+        }
+        if (players(i).points >= 100) {
+          return endGame
+        }
+      }
+      publish(new NewRound)
+    }
   }
 
   override def boardToString(): String = {
@@ -116,13 +113,88 @@ class Controller @Inject() extends ControllerInterface with Observer {
     sb.toString()
   }
 
-  def checkUncovered(player: Player): Boolean = {
-    if (player.hand.sumUncovered() == 12) {
+  def checkUncovered(): Boolean = {
+    if (players(turn).hand.sumUncovered() == 12) {
       true
     } else {
       false
     }
   }
 
+  def lowestPoints(): Boolean = {
+    val lowest = players(turn).hand.summarizeAll()
+    var bool = false
+    if (lowest > 0) {
+      for (i <- 0 until players.length) {
+        if (!(i == turn)) {
+          if (players(i).hand.summarizeAll() <= lowest) {
+            bool = true
+          }
+        }
+      }
 
+    }
+    bool
+  }
+
+  def endGame(): Unit = {
+    var winnerPoints = 100
+    for (i <- 0 until players.length) {
+      if (players(i).points < winnerPoints) {
+        winnerPoints = players(i).points
+        winner = i
+        publish(new GameOver)
+      }
+    }
+  }
+
+  override def doMove(posY: Int, posX: Int, player: Int): Unit = {
+    if (player == turn) {
+      if (players(turn).hand.cards(posY)(posX).isUncovered) {
+        if (players(turn).hand.sumUncovered() > 1) {
+          tradeCard(players(turn), posY, posX)
+        } else {
+          players(turn).stillMyTurn = true
+        }
+      } else {
+        uncoverCard(players(turn), posY, posX)
+      }
+    }
+  }
+
+  override def uncoverCard(player: Player, posY: Int, posX: Int): Unit = {
+    undoManager.doStep(new UncoverCommand(player, posY, posX))
+    player.stillMyTurn = false
+    player.canDrawCard = true
+    notifyObservers
+    publish(new BoardChanged)
+  }
+
+  override def tradeCard(player: Player, posY: Int, posX: Int): Unit = {
+    undoManager.doStep(new TradeCommand(player, posY, posX))
+    player.stillMyTurn = false
+    player.canDrawCard = true
+    notifyObservers
+    publish(new BoardChanged)
+  }
+
+  override def newRound: Unit = {
+    deck = injector.getInstance(classOf[Deck])
+    deck.shuffle()
+    turn = 0
+
+    for (i <- 0 until players.length) {
+      players(i).hand.cards = deck.drawHand()
+    }
+  }
+
+  override def uncoverAll(): Unit = {
+    players(turn).hand.uncoverAll()
+    notifyObservers
+    publish(new BoardChanged)
+  }
+
+  override def shutdown: Unit = {
+    publish(new Shutdown)
+  }
 }
