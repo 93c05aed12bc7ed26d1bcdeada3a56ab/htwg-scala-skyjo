@@ -35,14 +35,13 @@ class Tui(controller: ControllerInterface) extends Reactor {
 
   def processInput(input: BufferedReader): Unit = {
 
-    controller.deck.drawCard()
-    println("Du bist an der Reihe: " + controller.players(controller.turn).name)
+    println("Du bist an der Reihe: " + controller.getPlayerTurnString)
     while (!stopProcessingInput) {
       if (input.ready()) {
         val line = input.readLine()
         processInputLine(line)
         if (!stopProcessingInput) {
-          println("Du bist an der Reihe: " + controller.players(controller.turn).name)
+          println("Du bist an der Reihe: " + controller.getPlayerTurnString)
         }
       } else {
         Thread.sleep(200)
@@ -72,7 +71,7 @@ class Tui(controller: ControllerInterface) extends Reactor {
       case "a" => controller.uncoverAll
       case _ =>
         input.toList.filter(c => c != ' ').map(c => c.toString) match {
-          case posY :: posX :: Nil => controller.doMove(posY.toInt, posX.toInt, controller.turn)
+          case posY :: posX :: Nil => controller.doMove(posY.toInt, posX.toInt, controller.getTurn)
           case _ =>
         }
     }
@@ -89,13 +88,13 @@ class Tui(controller: ControllerInterface) extends Reactor {
   def newRound: Unit = {
     controller.newRound
     println("Neue Runde:")
-    println("Du bist an der Reihe: " + controller.players(controller.turn).name)
+    println("Du bist an der Reihe: " + controller.getPlayerTurnString)
   }
 
   def newGame: Unit = {
-    println("Glückwunsch " + controller.players(controller.winner).name + "! Du hast Gewonnen!")
-    controller.newGame()
+    println("Glückwunsch " + controller.getWinnerString + "! Du hast Gewonnen!")
     println("Neues Spiel:")
+    controller.newGame()
     start(new BufferedReader(Console.in))
   }
 

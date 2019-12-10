@@ -1,10 +1,10 @@
 package de.htwg.se.skyjo.model.playerComponent
 
-import de.htwg.se.skyjo.model.deckComponent.deckBaseImpl.Deck
+import de.htwg.se.skyjo.model.deckComponent.DeckInterface
 import de.htwg.se.skyjo.model.handComponent.handBaseImpl.Hand
 import de.htwg.se.skyjo.util.Observer
 
-case class Player(name: String, deck: Deck) extends Observer {
+case class Player(name: String, deck: DeckInterface) extends Observer {
 
   var points = 0
   var hand = Hand()

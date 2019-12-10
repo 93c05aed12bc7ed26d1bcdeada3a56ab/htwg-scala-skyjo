@@ -1,18 +1,11 @@
 package de.htwg.se.skyjo.controller
 
-import de.htwg.se.skyjo.model.deckComponent.deckBaseImpl.Deck
 import de.htwg.se.skyjo.model.playerComponent.Player
 import de.htwg.se.skyjo.util.Observable
 
 import scala.swing.Publisher
 
 trait ControllerInterface extends Observable with Publisher {
-
-  var turn: Int
-
-  var deck: Deck
-
-  var players: scala.collection.mutable.ArrayBuffer[Player]
 
   var winner: Int
 
@@ -39,6 +32,12 @@ trait ControllerInterface extends Observable with Publisher {
   def uncoverAll: Unit
 
   def newRound: Unit
+
+  def getPlayerTurnString: String
+
+  def getWinnerString: String
+
+  def getTurn: Int
 }
 
 import scala.swing.event.Event
