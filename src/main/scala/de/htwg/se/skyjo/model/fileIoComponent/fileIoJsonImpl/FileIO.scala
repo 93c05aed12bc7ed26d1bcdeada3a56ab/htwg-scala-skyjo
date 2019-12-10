@@ -1,5 +1,7 @@
 package de.htwg.se.skyjo.model.fileIoComponent.fileIoJsonImpl
 
+import com.google.inject.Guice
+import de.htwg.se.skyjo.SkyjoModule
 import de.htwg.se.skyjo.model.fileIoComponent.FileIOInterface
 import de.htwg.se.skyjo.model.gameBoardComponent.GameBoardInterface
 import play.api.libs.json._
@@ -12,6 +14,11 @@ class FileIO extends FileIOInterface {
     var gameBoard: GameBoardInterface = null
     val source: String = Source.fromFile("gameBoard.json").getLines.mkString
     val json: JsValue = Json.parse(source)
+
+    val injector = Guice.createInjector(new SkyjoModule)
+
+    gameBoard = injector.getInstance(classOf[GameBoardInterface])
+
 
     gameBoard
   }
