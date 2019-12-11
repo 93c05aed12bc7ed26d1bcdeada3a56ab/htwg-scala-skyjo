@@ -1,12 +1,13 @@
 package de.htwg.se.skyjo.model.handComponent.handBaseImpl
 
+import de.htwg.se.skyjo.model.cardComponent.CardInterface
 import de.htwg.se.skyjo.model.cardComponent.cardBaseImpl.Card
 import de.htwg.se.skyjo.model.handComponent.HandInterface
 
 case class Hand() extends HandInterface {
 
 
-  var cards: Array[Array[Card]] = Array.ofDim[Card](Hand.ROWS, Hand.COLUMNS)
+  var cards: Array[Array[CardInterface]] = Array.ofDim[CardInterface](Hand.ROWS, Hand.COLUMNS)
 
   for {
     i <- 0 until Hand.ROWS

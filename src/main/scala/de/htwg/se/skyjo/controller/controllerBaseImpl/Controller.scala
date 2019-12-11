@@ -91,6 +91,7 @@ class Controller @Inject()(var gameBoard: GameBoardInterface) extends Controller
         }
         //TODO punkte werden nicht richtig zusammen gezählt
         //TODO erst von allen spielern die punkte zsm zählen dann prüfen ob einer über 100
+        //TODO die hand muss vom kartenstapel gezogen werden
         if (gameBoard.players(i).points >= 100) {
           return endGame
         }
@@ -206,12 +207,12 @@ class Controller @Inject()(var gameBoard: GameBoardInterface) extends Controller
     gameBoard.turn
   }
 
-  def save: Unit = {
+  override def save: Unit = {
     fileIo.save(gameBoard)
     publish(new BoardChanged)
   }
 
-  def load: Unit = {
+  override def load: Unit = {
     gameBoard = fileIo.load
     publish(new BoardChanged)
   }

@@ -38,6 +38,10 @@ trait ControllerInterface extends Observable with Publisher {
   def getWinnerString: String
 
   def getTurn: Int
+
+  def save: Unit
+
+  def load: Unit
 }
 
 import scala.swing.event.Event
