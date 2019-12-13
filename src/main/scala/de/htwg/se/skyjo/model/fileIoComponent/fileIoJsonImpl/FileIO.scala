@@ -27,6 +27,8 @@ class FileIO extends FileIOInterface {
     val numCards = (json \\ "numCards").head.as[Int]
 
     //TODO die arrays richtig loaden
+    //TODO if drum herum um zu schauen ob es mit gameboard anfängt oder mit zB Move und dann nur einen move laden (für webtec)
+
     val deck = new Deck
     deck.discardPile
     deck.cards

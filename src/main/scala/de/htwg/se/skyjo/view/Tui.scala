@@ -70,10 +70,13 @@ class Tui(controller: ControllerInterface) extends Reactor {
       case "s" => controller.save
       case "l" => controller.load
       case "c" => controller.drawCard
+      case "t" => controller.trade = true
       case "a" => controller.uncoverAll
       case _ =>
         input.toList.filter(c => c != ' ').map(c => c.toString) match {
-          case posY :: posX :: Nil => controller.doMove(posY.toInt, posX.toInt, controller.getTurn)
+          case posY :: posX :: Nil => {
+            controller.doMove(posY.toInt, posX.toInt, controller.getTurn)
+          }
           case _ =>
         }
     }

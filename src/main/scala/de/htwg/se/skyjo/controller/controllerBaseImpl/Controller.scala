@@ -17,6 +17,7 @@ class Controller @Inject()(var gameBoard: GameBoardInterface) extends Controller
   var undoManager = new UndoManager
   val fileIo = injector.getInstance(classOf[FileIOInterface])
   var winner = -1
+  var trade = false
 
   def newGame(): Unit = {
     subscribers = Vector()
@@ -151,11 +152,13 @@ class Controller @Inject()(var gameBoard: GameBoardInterface) extends Controller
 
   override def doMove(posY: Int, posX: Int, player: Int): Unit = {
     if (player == gameBoard.turn) {
-      if (gameBoard.players(gameBoard.turn).hand.cards(posY)(posX).isUncovered) {
+      if (trade) {
         if (gameBoard.players(gameBoard.turn).hand.sumUncovered() > 1) {
           tradeCard(gameBoard.players(gameBoard.turn), posY, posX)
+          trade = false
         } else {
           gameBoard.players(gameBoard.turn).stillMyTurn = true
+          trade = false
         }
       } else {
         uncoverCard(gameBoard.players(gameBoard.turn), posY, posX)
@@ -205,6 +208,10 @@ class Controller @Inject()(var gameBoard: GameBoardInterface) extends Controller
 
   override def getTurn: Int = {
     gameBoard.turn
+  }
+
+  override def getCard(posY: Int, posX: Int, player: Int): String = {
+    gameBoard.players(player).hand.cards(posY)(posX).getValue
   }
 
   override def save: Unit = {

@@ -9,6 +9,8 @@ trait ControllerInterface extends Observable with Publisher {
 
   var winner: Int
 
+  var trade: Boolean
+
   def newGame(): Unit
 
   def createPlayer(name: String): Unit
@@ -38,6 +40,8 @@ trait ControllerInterface extends Observable with Publisher {
   def getWinnerString: String
 
   def getTurn: Int
+
+  def getCard(posY: Int, posX: Int, player: Int): String
 
   def save: Unit
 

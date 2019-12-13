@@ -6,6 +6,7 @@ import de.htwg.se.skyjo.util.Command
 class TradeCommand(player: Player, posY: Int, posX: Int) extends Command {
   override def doStep: Unit = {
     val draw = player.deck.discardPile.pop()
+    player.hand.cards(posY)(posX).isUncovered = true
     val selectedCard = player.hand.cards(posY)(posX)
 
     player.hand.cards(posY)(posX) = draw
