@@ -95,7 +95,6 @@ class FileIO extends FileIOInterface {
               "stillMyTurn" -> JsBoolean(gameBoard.players(i).stillMyTurn),
               "canDrawCard" -> JsBoolean(gameBoard.players(i).canDrawCard),
             )
-            ,
           }
         ),
         "turn" -> JsNumber(gameBoard.turn),

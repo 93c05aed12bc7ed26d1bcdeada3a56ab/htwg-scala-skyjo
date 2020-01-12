@@ -214,6 +214,14 @@ class Controller @Inject()(var gameBoard: GameBoardInterface) extends Controller
     gameBoard.players(player).hand.cards(posY)(posX).getValue
   }
 
+  override def getPlayerListSize(): Int = {
+    gameBoard.players.length
+  }
+
+  override def getPlayerName(player: Int): String = {
+    gameBoard.players(player).name
+  }
+
   override def save: Unit = {
     fileIo.save(gameBoard)
     publish(new BoardChanged)

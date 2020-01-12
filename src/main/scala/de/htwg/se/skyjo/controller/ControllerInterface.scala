@@ -43,6 +43,10 @@ trait ControllerInterface extends Observable with Publisher {
 
   def getCard(posY: Int, posX: Int, player: Int): String
 
+  def getPlayerListSize(): Int
+
+  def getPlayerName(player: Int): String
+
   def save: Unit
 
   def load: Unit
