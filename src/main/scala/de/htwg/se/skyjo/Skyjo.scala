@@ -5,13 +5,14 @@ import java.io.BufferedReader
 import com.google.inject.Guice
 import de.htwg.se.skyjo.controller.ControllerInterface
 import de.htwg.se.skyjo.view.Tui
-
+import de.htwg.se.skyjo.view.gui.SwingGui
 
 object Skyjo {
 
   val injector = Guice.createInjector(new SkyjoModule)
   val controller = injector.getInstance(classOf[ControllerInterface])
   val tui = new Tui(controller)
+  val gui = new SwingGui(controller)
   controller.newGame()
 
   def main(args: Array[String]): Unit = {

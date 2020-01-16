@@ -3,6 +3,7 @@ package de.htwg.se.skyjo.controller.controllerBaseImpl
 import com.google.inject.{Guice, Inject}
 import de.htwg.se.skyjo.SkyjoModule
 import de.htwg.se.skyjo.controller.{BoardChanged, CandidatesChanged, ControllerInterface, GameOver, NewRound, Shutdown}
+import de.htwg.se.skyjo.model.cardComponent.CardInterface
 import de.htwg.se.skyjo.model.deckComponent.deckBaseImpl.Deck
 import de.htwg.se.skyjo.model.fileIoComponent.FileIOInterface
 import de.htwg.se.skyjo.model.gameBoardComponent.GameBoardInterface
@@ -23,7 +24,7 @@ class Controller @Inject()(var gameBoard: GameBoardInterface) extends Controller
     subscribers = Vector()
     injector = Guice.createInjector(new SkyjoModule)
     undoManager = new UndoManager
-
+    //TODO winner und trade auch auf default was ist mit player?
     gameBoard = injector.getInstance(classOf[GameBoardInterface])
     add(this)
     gameBoard.deck.shuffle()
@@ -214,12 +215,24 @@ class Controller @Inject()(var gameBoard: GameBoardInterface) extends Controller
     gameBoard.players(player).hand.cards(posY)(posX).getValue
   }
 
+  override def getCardAsCard(posY: Int, posX: Int, player: Int): CardInterface = {
+    gameBoard.players(player).hand.cards(posY)(posX)
+  }
+
+  override def getCardIsUncovered(posY: Int, posX: Int, player: Int): Boolean = {
+    gameBoard.players(player).hand.cards(posY)(posX).isUncovered
+  }
+
   override def getPlayerListSize(): Int = {
     gameBoard.players.length
   }
 
   override def getPlayerName(player: Int): String = {
     gameBoard.players(player).name
+  }
+
+  override def getDiscardPileTop(): String = {
+    gameBoard.deck.discardPileTopCard().toString
   }
 
   override def save: Unit = {

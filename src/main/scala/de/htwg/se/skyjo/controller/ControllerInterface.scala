@@ -1,5 +1,6 @@
 package de.htwg.se.skyjo.controller
 
+import de.htwg.se.skyjo.model.cardComponent.CardInterface
 import de.htwg.se.skyjo.model.playerComponent.Player
 import de.htwg.se.skyjo.util.Observable
 
@@ -43,9 +44,15 @@ trait ControllerInterface extends Observable with Publisher {
 
   def getCard(posY: Int, posX: Int, player: Int): String
 
+  def getCardAsCard(posY: Int, posX: Int, player: Int): CardInterface
+
+  def getCardIsUncovered(posY: Int, posX: Int, player: Int): Boolean
+
   def getPlayerListSize(): Int
 
   def getPlayerName(player: Int): String
+
+  def getDiscardPileTop: String
 
   def save: Unit
 
