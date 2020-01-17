@@ -54,6 +54,8 @@ trait ControllerInterface extends Observable with Publisher {
 
   def getDiscardPileTop: String
 
+  def getPlayerPoints(player: Int): String
+
   def save: Unit
 
   def load: Unit

@@ -24,7 +24,8 @@ class Controller @Inject()(var gameBoard: GameBoardInterface) extends Controller
     subscribers = Vector()
     injector = Guice.createInjector(new SkyjoModule)
     undoManager = new UndoManager
-    //TODO winner und trade auch auf default was ist mit player?
+    winner = -1
+    trade = false
     gameBoard = injector.getInstance(classOf[GameBoardInterface])
     add(this)
     gameBoard.deck.shuffle()
@@ -186,6 +187,7 @@ class Controller @Inject()(var gameBoard: GameBoardInterface) extends Controller
   override def newRound: Unit = {
     gameBoard.deck = injector.getInstance(classOf[Deck])
     gameBoard.deck.shuffle()
+    gameBoard.deck.drawCard()
     gameBoard.turn = 0
 
     for (i <- 0 until gameBoard.players.length) {
@@ -233,6 +235,10 @@ class Controller @Inject()(var gameBoard: GameBoardInterface) extends Controller
 
   override def getDiscardPileTop(): String = {
     gameBoard.deck.discardPileTopCard().toString
+  }
+
+  override def getPlayerPoints(player: Int): String = {
+    gameBoard.players(player).points.toString
   }
 
   override def save: Unit = {
