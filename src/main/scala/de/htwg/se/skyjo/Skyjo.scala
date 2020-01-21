@@ -20,7 +20,7 @@ object Skyjo {
       tui.start(args(0).toInt, new BufferedReader(Console.in))
       // TODO error handling
     }else {
-      tui.start(new BufferedReader(Console.in))
+      //tui.start(new BufferedReader(Console.in))
     }
   }
 

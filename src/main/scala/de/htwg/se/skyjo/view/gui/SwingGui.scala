@@ -10,9 +10,12 @@ class SwingGui(controller: ControllerInterface) extends Frame {
 
   playerpanel.visible = true
 
-  def startGui: Unit = {
+  def startGui: Frame = new Frame() {
+
     var cells = Array.ofDim[CellPanel](controller.getPlayerListSize(), 3, 4)
-    var playerPoints = Array[Label](controller.getPlayerListSize())
+
+    var pointPanel: PointPanel = new PointPanel(controller)
+
     var buttonDiscardPile: Button = Button(controller.getDiscardPileTop) {
       controller.trade = true
     }
@@ -85,7 +88,7 @@ class SwingGui(controller: ControllerInterface) extends Frame {
       } {
         cells(player)(row)(column).redraw
       }
-
+      pointPanel.redraw
       statusline.text = "Du bist an der Reihe: " + controller.getPlayerTurnString
 
       repaint
@@ -93,12 +96,11 @@ class SwingGui(controller: ControllerInterface) extends Frame {
 
     def newRound: Unit = {
       controller.newRound
-      pointPanel.repaint
       repaint
     }
 
     def newGame: Unit = {
-      if (!(controller.winner == -1)) {
+      if (controller.winner != -1) {
         Dialog.showMessage(contents.head, "Glückwunsch " + controller.getWinnerString + "! Du hast Gewonnen!", title = "We have a Winner!")
       }
       playerpanel.visible = true
@@ -126,7 +128,6 @@ class SwingGui(controller: ControllerInterface) extends Frame {
     def gridPanel: GridPanel = new GridPanel(controller.getPlayerListSize(), 1) {
       border = LineBorder(java.awt.Color.BLACK, 2)
       //TODO eventuel nicht nur eine zeile sondern mehr
-      //TODO name angeben
       for {
         outerRow <- 0 until controller.getPlayerListSize()
         outerColumn <- 0 until 1
@@ -146,20 +147,11 @@ class SwingGui(controller: ControllerInterface) extends Frame {
       }
     }
 
-    def pointPanel: BoxPanel = new BoxPanel(Orientation.Vertical) {
-      contents += new Label("Punkte") {
-        font = new Font("Verdana", 1, 32)
-      }
-      for (i <- 0 until controller.getPlayerListSize()) {
-
-        contents += new Label(controller.getPlayerName(i) + ": " + controller.getPlayerPoints(i))
-      }
-    }
   }
 
 
   def playerpanel: Frame = new Frame() {
-    title = "How many Players will play?"
+    title = "Wie viele Spieler wollen spielen?"
     preferredSize = new Dimension(320, 80)
 
 

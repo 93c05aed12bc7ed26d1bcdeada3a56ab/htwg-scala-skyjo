@@ -81,6 +81,7 @@ class Controller @Inject()(var gameBoard: GameBoardInterface) extends Controller
     if (gameBoard.turn == gameBoard.players.length) {
       gameBoard.turn = 0
     }
+    publish(new BoardChanged)
   }
 
   def checkEnd(): Unit = {
@@ -172,16 +173,16 @@ class Controller @Inject()(var gameBoard: GameBoardInterface) extends Controller
     undoManager.doStep(new UncoverCommand(player, posY, posX))
     player.stillMyTurn = false
     player.canDrawCard = true
-    notifyObservers
     publish(new BoardChanged)
+    notifyObservers
   }
 
   override def tradeCard(player: Player, posY: Int, posX: Int): Unit = {
     undoManager.doStep(new TradeCommand(player, posY, posX))
     player.stillMyTurn = false
     player.canDrawCard = true
-    notifyObservers
     publish(new BoardChanged)
+    notifyObservers
   }
 
   override def newRound: Unit = {
@@ -197,8 +198,8 @@ class Controller @Inject()(var gameBoard: GameBoardInterface) extends Controller
 
   override def uncoverAll(): Unit = {
     gameBoard.players(gameBoard.turn).hand.uncoverAll()
-    notifyObservers
     publish(new BoardChanged)
+    notifyObservers
   }
 
   override def getPlayerTurnString: String = {

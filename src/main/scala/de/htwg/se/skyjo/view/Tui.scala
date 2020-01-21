@@ -8,25 +8,14 @@ import scala.swing.Reactor
 
 class Tui(controller: ControllerInterface) extends Reactor {
 
+  var startedWithoutGUI = false
   var stopProcessingInput = false
   listenTo(controller)
 
-  def start(input: BufferedReader): Unit = {
-    println("How many Players will play?")
-    val num_players = input.readLine().toInt
-    // TODO error handling
-
-    for (i <- 0 until num_players){
-      println("Name of Player " + (i + 1) + "?")
-      val name = input.readLine()
-      controller.createPlayer(name)
-    }
-    processInput(input)
-  }
-
   def start(num_players: Int, input: BufferedReader): Unit = {
+    startedWithoutGUI = true
     for (i <- 0 until num_players){
-      println("Name of Player " + (i + 1) + "?")
+      println("Name vom Spieler " + (i + 1) + "?")
       val name = input.readLine()
       controller.createPlayer(name)
     }
@@ -47,11 +36,20 @@ class Tui(controller: ControllerInterface) extends Reactor {
         Thread.sleep(200)
       }
     }
+    input.close()
   }
 
-  //TODO die karte vom ablagestapel tauschen mit dem spielfeld(offen oder verdeckte) oder
-  //TODO karte ziehen und die tauschen mit dem spielfeld(offen oder verdeckte) oder
-  //TODO eine karte umdrehen
+  def newGame: Unit = {
+    if (controller.winner != -1) {
+      println("Glückwunsch " + controller.getWinnerString + "! Du hast Gewonnen!")
+    }
+    println("Neues Spiel:")
+    controller.newGame()
+    if (startedWithoutGUI) {
+      start(new BufferedReader(Console.in))
+    }
+  }
+
 
   //TODO nach den zwei aufgedeckten karten darf der mit der höchsten augensumme anfangen
   //TODO der spieler der die aktuelle spielrunde beendet hat darf die nächste runde anfangen
@@ -96,11 +94,17 @@ class Tui(controller: ControllerInterface) extends Reactor {
     println("Du bist an der Reihe: " + controller.getPlayerTurnString)
   }
 
-  def newGame: Unit = {
-    println("Glückwunsch " + controller.getWinnerString + "! Du hast Gewonnen!")
-    println("Neues Spiel:")
-    controller.newGame()
-    start(new BufferedReader(Console.in))
+  def start(input: BufferedReader): Unit = {
+    startedWithoutGUI = true
+    println("Wie viele Spieler wollen spielen?")
+    val num_players = input.readLine().toInt
+    // TODO error handling
+    for (i <- 0 until num_players) {
+      println("Name vom Spieler " + (i + 1) + "?")
+      val name = input.readLine()
+      controller.createPlayer(name)
+    }
+    processInput(input)
   }
 
 
