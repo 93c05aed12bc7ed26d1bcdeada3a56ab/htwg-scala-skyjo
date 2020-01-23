@@ -10,10 +10,10 @@ class PointPanel(controller: ControllerInterface) extends BoxPanel(Orientation.V
     text = "Punkte"
     font = new Font("Verdana", 1, 32)
   }
+  var playerPoints = Array.ofDim[Label](controller.getPlayerListSize())
   for (i <- 0 until controller.getPlayerListSize()) {
     playerPoints(i) = new Label(pointText(i))
   }
-  var playerPoints = Array.ofDim[Label](controller.getPlayerListSize())
 
   def redraw: Unit = {
 
