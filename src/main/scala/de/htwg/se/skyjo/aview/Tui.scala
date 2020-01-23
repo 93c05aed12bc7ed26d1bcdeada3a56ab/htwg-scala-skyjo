@@ -1,4 +1,4 @@
-package de.htwg.se.skyjo.view
+package de.htwg.se.skyjo.aview
 
 import java.io.BufferedReader
 

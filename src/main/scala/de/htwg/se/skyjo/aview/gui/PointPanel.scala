@@ -1,4 +1,4 @@
-package de.htwg.se.skyjo.view.gui
+package de.htwg.se.skyjo.aview.gui
 
 import de.htwg.se.skyjo.controller.ControllerInterface
 

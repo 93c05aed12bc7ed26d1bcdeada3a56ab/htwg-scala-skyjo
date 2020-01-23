@@ -3,9 +3,9 @@ package de.htwg.se.skyjo
 import java.io.BufferedReader
 
 import com.google.inject.Guice
+import de.htwg.se.skyjo.aview.Tui
+import de.htwg.se.skyjo.aview.gui.SwingGui
 import de.htwg.se.skyjo.controller.ControllerInterface
-import de.htwg.se.skyjo.view.Tui
-import de.htwg.se.skyjo.view.gui.SwingGui
 
 object Skyjo {
 
