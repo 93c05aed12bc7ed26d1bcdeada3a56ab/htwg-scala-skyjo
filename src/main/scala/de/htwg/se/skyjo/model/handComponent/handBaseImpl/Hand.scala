@@ -1,18 +1,20 @@
-package de.htwg.se.skyjo.model
+package de.htwg.se.skyjo.model.handComponent.handBaseImpl
 
-case class Hand() {
+import de.htwg.se.skyjo.model.cardComponent.CardInterface
+import de.htwg.se.skyjo.model.cardComponent.cardBaseImpl.Card
+import de.htwg.se.skyjo.model.handComponent.HandInterface
+
+case class Hand() extends HandInterface {
 
 
-  var cards: Array[Array[Card]] = Array.ofDim[Card](Hand.ROWS, Hand.COLUMNS)
-  var posX: Int = 0
-  var posY: Int = 0
+  var cards: Array[Array[CardInterface]] = Array.ofDim[CardInterface](Hand.ROWS, Hand.COLUMNS)
 
   for {
     i <- 0 until Hand.ROWS
     j <- 0 until Hand.COLUMNS
   } cards(i)(j) = Card()
 
-  def summarize(): Int = {
+  override def summarize(): Int = {
     var sum: Int = 0
 
     for {
@@ -24,12 +26,42 @@ case class Hand() {
     sum
   }
 
+  override def summarizeAll(): Int = {
+    var sum: Int = 0
+
+    for {
+      i <- 0 until Hand.ROWS
+      j <- 0 until Hand.COLUMNS
+    } sum += cards(i)(j).getValue.toInt
+
+    sum
+  }
+
+  def uncoverAll(): Unit = {
+    for {
+      i <- 0 until Hand.ROWS
+      j <- 0 until Hand.COLUMNS
+    } cards(i)(j).isUncovered = true
+  }
+
+  override def sumUncovered() : Int = {
+    var sumUncovered: Int = 0
+
+    for {
+      i <- 0 until Hand.ROWS
+      j <- 0 until Hand.COLUMNS
+    } if (cards(i)(j).isUncovered){
+      sumUncovered += 1
+    }
+    sumUncovered
+  }
+
   override def toString: String = {
     val curCoordsX = Array(2, 5, 8, 11)
     val curCoordsY = Array(2, 4, 6)
     var ret: String = ""
 
-    var grid = Array(
+    val grid = Array(
       Array(' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '\n'),
       Array(' ', '┌', '─', '─', '┬', '─', '─', '┬', '─', '─', '┬', '─', '─', '┐', '\n'),
       Array(' ', '│', '0', '0', '│', '1', '0', '│', '2', '0', '│', '3', '0', '│', '\n'),
@@ -39,10 +71,6 @@ case class Hand() {
       Array(' ', '│', '0', '2', '│', '1', '2', '│', '2', '2', '│', '3', '2', '│', '\n'),
       Array(' ', '└', '─', '─', '┴', '─', '─', '┴', '─', '─', '┴', '─', '─', '┘', '\n')
     )
-
-    grid(0)(curCoordsX(posX)) = '#'
-    grid(curCoordsY(posY))(0) = '#'
-
 
     for {
       i <- 0 until Hand.ROWS
@@ -69,22 +97,6 @@ case class Hand() {
     ret
   }
 
-  def move(dir: String): Unit ={
-
-    dir match {
-      case "right" => posX += 1
-      case "left" => posX -= 1
-      case "up" => posY -= 1
-      case "down" => posY += 1
-    }
-
-    posX = clamp(posX, 0, Hand.COLUMNS - 1)
-    posY = clamp(posY, 0, Hand.ROWS - 1)
-  }
-
-  def clamp(value: Int, min: Int, max: Int): Int ={
-    if ( value < min) min else if (value > max) max else value
-  }
 }
 
 object Hand{

@@ -1,33 +1,27 @@
 package de.htwg.se.skyjo
 
-import de.htwg.se.skyjo.controller.Controller
-import de.htwg.se.skyjo.model.{Deck, Player}
-import de.htwg.se.skyjo.view.Tui
+import java.io.BufferedReader
 
+import com.google.inject.Guice
+import de.htwg.se.skyjo.aview.Tui
+import de.htwg.se.skyjo.aview.gui.SwingGui
+import de.htwg.se.skyjo.controller.ControllerInterface
 
 object Skyjo {
 
-  val player = Player("Hans")
-  val controller = new Controller(Deck(), player)
-  val tui = new Tui(controller, player)
-  controller.notifyObservers
+  val injector = Guice.createInjector(new SkyjoModule)
+  val controller = injector.getInstance(classOf[ControllerInterface])
+  val tui = new Tui(controller)
+  val gui = new SwingGui(controller)
+  controller.newGame()
 
   def main(args: Array[String]): Unit = {
-
-    var input: String= ""
     if (args.length > 0) {
-      input = args(0)
-    }
-
-    if(!input.isEmpty){
-      tui.processInput(input)
-    }
-    else{
-      do{
-        input = readLine()
-        tui.processInput(input)
-      }
-      while(input != "q")
+      tui.start(args(0).toInt, new BufferedReader(Console.in))
+      // TODO error handling
+    }else {
+      //tui.start(new BufferedReader(Console.in))
     }
   }
+
 }
