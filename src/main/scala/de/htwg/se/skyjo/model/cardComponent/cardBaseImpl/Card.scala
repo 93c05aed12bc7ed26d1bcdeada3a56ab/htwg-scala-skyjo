@@ -1,9 +1,11 @@
-package de.htwg.se.skyjo.model
+package de.htwg.se.skyjo.model.cardComponent.cardBaseImpl
 
-case class Card(value: Int = Card.valUndefined) {
+import de.htwg.se.skyjo.model.cardComponent.CardInterface
+
+case class Card(value: Int = Card.valUndefined) extends CardInterface {
   var isUncovered: Boolean = false
 
-  def getValue:String = {
+  override def getValue:String = {
     if(isUncovered){
       value.toString
     } else {
