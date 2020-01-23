@@ -1,5 +1,5 @@
 
-package de.htwg.se.skyjo.model
+package de.htwg.se.skyjo.model.playerComponent
 
 import de.htwg.se.skyjo.model.deckComponent.deckBaseImpl.Deck
 import org.scalatest._
