@@ -5,9 +5,9 @@ import de.htwg.se.skyjo.SkyjoModule
 import de.htwg.se.skyjo.controller.{BoardChanged, CandidatesChanged, ControllerInterface, GameOver, NewRound, Shutdown}
 import de.htwg.se.skyjo.model.cardComponent.CardInterface
 import de.htwg.se.skyjo.model.deckComponent.deckBaseImpl.Deck
-import de.htwg.se.skyjo.model.fileIoComponent.FileIOInterface
 import de.htwg.se.skyjo.model.gameBoardComponent.GameBoardInterface
-import de.htwg.se.skyjo.model.playerComponent
+import de.htwg.se.skyjo.model.gameBoardComponent.gameBoardImpl.GameBoard
+import de.htwg.se.skyjo.model.{fileIoComponent, playerComponent}
 import de.htwg.se.skyjo.model.playerComponent.Player
 import de.htwg.se.skyjo.util.{Observer, UndoManager}
 
@@ -16,7 +16,7 @@ class Controller @Inject()(var gameBoard: GameBoardInterface) extends Controller
 
   var injector = Guice.createInjector(new SkyjoModule)
   var undoManager = new UndoManager
-  val fileIo = injector.getInstance(classOf[FileIOInterface])
+  val fileIo = injector.getInstance(classOf[fileIoComponent.fileIoXmlImpl.FileIO])
   var winner = -1
   var trade = false
 
@@ -26,7 +26,7 @@ class Controller @Inject()(var gameBoard: GameBoardInterface) extends Controller
     undoManager = new UndoManager
     winner = -1
     trade = false
-    gameBoard = injector.getInstance(classOf[GameBoardInterface])
+    gameBoard = injector.getInstance(classOf[GameBoard])
     add(this)
     gameBoard.deck.shuffle()
     gameBoard.deck.drawCard()

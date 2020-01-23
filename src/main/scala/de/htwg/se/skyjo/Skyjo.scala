@@ -2,15 +2,15 @@ package de.htwg.se.skyjo
 
 import java.io.BufferedReader
 
-import com.google.inject.Guice
+import com.google.inject.{Guice, Injector}
 import de.htwg.se.skyjo.aview.Tui
 import de.htwg.se.skyjo.aview.gui.SwingGui
-import de.htwg.se.skyjo.controller.ControllerInterface
+import de.htwg.se.skyjo.controller.controllerBaseImpl.Controller
 
 object Skyjo {
 
-  val injector = Guice.createInjector(new SkyjoModule)
-  val controller = injector.getInstance(classOf[ControllerInterface])
+  val injector: Injector = Guice.createInjector(new SkyjoModule)
+  val controller: Controller = injector.getInstance(classOf[Controller])
   val tui = new Tui(controller)
   val gui = new SwingGui(controller)
   controller.newGame()
