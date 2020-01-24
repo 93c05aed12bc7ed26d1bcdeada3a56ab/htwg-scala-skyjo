@@ -30,8 +30,8 @@ class FileIO extends FileIOInterface {
     //TODO if drum herum um zu schauen ob es mit gameboard anfängt oder mit zB Move und dann nur einen move laden (für webtec)
 
     val deck = new Deck
-    deck.discardPile
-    deck.cards
+    //deck.discardPile
+    //deck.cards
     gameBoard.deck = deck
 
     for (i <- 0 until numPlayer) {
