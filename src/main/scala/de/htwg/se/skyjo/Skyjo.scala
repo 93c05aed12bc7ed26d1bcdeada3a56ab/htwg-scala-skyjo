@@ -1,6 +1,7 @@
 package de.htwg.se.skyjo
 
 import com.google.inject.{Guice, Injector}
+import de.htwg.se.skyjo.aview.gui.SwingGui
 import de.htwg.se.skyjo.controller.ControllerInterface
 import de.htwg.se.skyjo.controller.controllerBaseImpl.Controller
 
@@ -9,7 +10,7 @@ object Skyjo {
   val injector: Injector = Guice.createInjector(new SkyjoModule)
   val controller: ControllerInterface = injector.getInstance(classOf[Controller])
   //  val tui = new Tui(controller)
-  //  val gui = new SwingGui(controller)
+  //val gui = new SwingGui(controller)
   controller.newGame()
 
   def main(args: Array[String]): Unit = {

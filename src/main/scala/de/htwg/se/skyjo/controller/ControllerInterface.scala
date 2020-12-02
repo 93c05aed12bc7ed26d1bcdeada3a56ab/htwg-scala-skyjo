@@ -58,7 +58,7 @@ trait ControllerInterface extends Observable with Publisher {
 
   def save: Unit
 
-  def load: Unit
+  def load(source: String): Unit
 }
 
 import scala.swing.event.Event

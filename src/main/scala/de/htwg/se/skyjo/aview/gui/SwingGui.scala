@@ -2,6 +2,7 @@ package de.htwg.se.skyjo.aview.gui
 
 import de.htwg.se.skyjo.controller._
 
+import scala.io.Source
 import scala.swing.Swing.LineBorder
 import scala.swing._
 import scala.swing.event._
@@ -55,7 +56,7 @@ class SwingGui(controller: ControllerInterface) extends Frame {
           controller.save
         })
         contents += new MenuItem(Action("Load") {
-          controller.load
+          controller.load(Source.fromFile("gameBoard.json").getLines.mkString)
         })
 
       }

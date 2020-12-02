@@ -13,39 +13,54 @@ import scala.io.Source
 
 class FileIO extends FileIOInterface {
 
-  override def load: GameBoardInterface = {
-    var gameBoard: GameBoardInterface = null
-    val source: String = Source.fromFile("gameBoard.json").getLines.mkString
+  override def load(source: String, game: GameBoardInterface): GameBoardInterface = {
     val json: JsValue = Json.parse(source)
 
-    val injector = Guice.createInjector(new SkyjoModule)
+    if(source.contains("gameBoard")){
 
-    gameBoard = injector.getInstance(classOf[GameBoardInterface])
+        var gameBoard: GameBoardInterface = null
+        val injector = Guice.createInjector(new SkyjoModule)
 
-    val numPlayer = (json \\ "numPlayer").head.as[Int]
-    val numDiscardPile = (json \\ "numDiscardPile").head.as[Int]
-    val numCards = (json \\ "numCards").head.as[Int]
+        gameBoard = injector.getInstance(classOf[GameBoardInterface])
 
-    //TODO die arrays richtig loaden
-    //TODO if drum herum um zu schauen ob es mit gameboard anfängt oder mit zB Move und dann nur einen move laden (für webtec)
+        val numPlayer = (json \\ "numPlayer").head.as[Int]
+        val numDiscardPile = (json \\ "numDiscardPile").head.as[Int]
+        val numCards = (json \\ "numCards").head.as[Int]
 
-    val deck = new Deck
-    //deck.discardPile
-    //deck.cards
-    gameBoard.deck = deck
+        //TODO die arrays richtig loaden
+        //TODO if drum herum um zu schauen ob es mit gameboard anfängt oder mit zB Move und dann nur einen move laden (für webtec)
 
-    for (i <- 0 until numPlayer) {
-      val name = (json \\ "name") (i).as[String]
-      val player = new Player(name, deck)
-      player.points = (json \\ "points") (i).as[Int]
-      player.stillMyTurn = (json \\ "stillMyTurn") (i).as[Boolean]
-      player.canDrawCard = (json \\ "canDrawCard") (i).as[Boolean]
-      player.hand.cards
-      gameBoard.players.+=(player)
+        val deck = new Deck
+        //deck.discardPile
+        //deck.cards
+        gameBoard.deck = deck
+
+        for (i <- 0 until numPlayer) {
+          val name = (json \\ "name") (i).as[String]
+          val player = new Player(name, deck)
+          player.points = (json \\ "points") (i).as[Int]
+          player.stillMyTurn = (json \\ "stillMyTurn") (i).as[Boolean]
+          player.canDrawCard = (json \\ "canDrawCard") (i).as[Boolean]
+          player.hand.cards
+          gameBoard.players.+=(player)
+        }
+
+        gameBoard.turn = (json \\ "turn").head.as[Int]
+        gameBoard
+      } else {
+
+      if(source.contains("uncover")) {
+        val player = (json \\ "player").head.as[Int]
+        val x = (json \\ "x").head.as[Int]
+        val y = (json \\ "y").head.as[Int]
+
+        game.players(player).hand.cards(x)(y).isUncovered = true
+
+      }
+
+      game
     }
 
-    gameBoard.turn = (json \\ "turn").head.as[Int]
-    gameBoard
   }
 
   override def save(gameBoard: GameBoardInterface): Unit = {

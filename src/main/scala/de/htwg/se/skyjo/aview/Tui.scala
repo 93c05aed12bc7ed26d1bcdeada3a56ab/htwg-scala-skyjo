@@ -4,6 +4,7 @@ import java.io.BufferedReader
 
 import de.htwg.se.skyjo.controller.{BoardChanged, CandidatesChanged, ControllerInterface, GameOver, NewRound, Shutdown}
 
+import scala.io.Source
 import scala.swing.Reactor
 
 class Tui(controller: ControllerInterface) extends Reactor {
@@ -66,7 +67,7 @@ class Tui(controller: ControllerInterface) extends Reactor {
       case "u" => controller.undo
       case "r" => controller.redo
       case "s" => controller.save
-      case "l" => controller.load
+      case "l" => controller.load(Source.fromFile("gameBoard.json").getLines.mkString)
       case "c" => controller.drawCard
       case "t" => controller.trade = true
       case "a" => controller.uncoverAll

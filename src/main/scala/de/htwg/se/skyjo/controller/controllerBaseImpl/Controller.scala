@@ -16,7 +16,7 @@ class Controller @Inject()(var gameBoard: GameBoardInterface) extends Controller
 
   var injector = Guice.createInjector(new SkyjoModule)
   var undoManager = new UndoManager
-  val fileIo = injector.getInstance(classOf[fileIoComponent.fileIoXmlImpl.FileIO])
+  val fileIo = injector.getInstance(classOf[fileIoComponent.fileIoJsonImpl.FileIO])
   var winner = -1
   var trade = false
 
@@ -247,8 +247,8 @@ class Controller @Inject()(var gameBoard: GameBoardInterface) extends Controller
     publish(new BoardChanged)
   }
 
-  override def load: Unit = {
-    gameBoard = fileIo.load
+  override def load(source: String): Unit = {
+    gameBoard = fileIo.load(source, gameBoard)
     publish(new BoardChanged)
   }
 
