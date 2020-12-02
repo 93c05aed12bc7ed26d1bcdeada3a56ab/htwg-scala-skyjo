@@ -10,6 +10,7 @@ import de.htwg.se.skyjo.model.gameBoardComponent.gameBoardImpl.GameBoard
 import de.htwg.se.skyjo.model.{fileIoComponent, playerComponent}
 import de.htwg.se.skyjo.model.playerComponent.Player
 import de.htwg.se.skyjo.util.{Observer, UndoManager}
+import play.api.libs.json.JsObject
 
 
 class Controller @Inject()(var gameBoard: GameBoardInterface) extends ControllerInterface with Observer {
@@ -254,5 +255,9 @@ class Controller @Inject()(var gameBoard: GameBoardInterface) extends Controller
 
   override def shutdown: Unit = {
     publish(new Shutdown)
+  }
+
+  def gameBoardtoJson: JsObject = {
+    fileIo.gridToJson(gameBoard)
   }
 }

@@ -3,6 +3,7 @@ package de.htwg.se.skyjo.controller
 import de.htwg.se.skyjo.model.cardComponent.CardInterface
 import de.htwg.se.skyjo.model.playerComponent.Player
 import de.htwg.se.skyjo.util.Observable
+import play.api.libs.json.JsObject
 
 import scala.swing.Publisher
 
@@ -59,6 +60,8 @@ trait ControllerInterface extends Observable with Publisher {
   def save: Unit
 
   def load(source: String): Unit
+
+  def  gameBoardtoJson: JsObject
 }
 
 import scala.swing.event.Event
