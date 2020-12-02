@@ -10,7 +10,7 @@ object Skyjo {
   val injector: Injector = Guice.createInjector(new SkyjoModule)
   val controller: ControllerInterface = injector.getInstance(classOf[Controller])
   //  val tui = new Tui(controller)
-  //val gui = new SwingGui(controller)
+  // val gui = new SwingGui(controller)
   controller.newGame()
 
   def main(args: Array[String]): Unit = {

@@ -248,7 +248,7 @@ class Controller @Inject()(var gameBoard: GameBoardInterface) extends Controller
   }
 
   override def load(source: String): Unit = {
-    gameBoard = fileIo.load(source, gameBoard)
+    gameBoard = fileIo.load(source, gameBoard, this)
     publish(new BoardChanged)
   }
 

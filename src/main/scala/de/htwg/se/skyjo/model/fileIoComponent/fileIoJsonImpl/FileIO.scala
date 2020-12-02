@@ -2,6 +2,7 @@ package de.htwg.se.skyjo.model.fileIoComponent.fileIoJsonImpl
 
 import com.google.inject.Guice
 import de.htwg.se.skyjo.SkyjoModule
+import de.htwg.se.skyjo.controller.ControllerInterface
 import de.htwg.se.skyjo.model.cardComponent.CardInterface
 import de.htwg.se.skyjo.model.deckComponent.deckBaseImpl.Deck
 import de.htwg.se.skyjo.model.fileIoComponent.FileIOInterface
@@ -13,7 +14,7 @@ import scala.io.Source
 
 class FileIO extends FileIOInterface {
 
-  override def load(source: String, game: GameBoardInterface): GameBoardInterface = {
+  override def load(source: String, game: GameBoardInterface, controller: ControllerInterface): GameBoardInterface = {
     val json: JsValue = Json.parse(source)
 
     if(source.contains("gameBoard")){
@@ -54,8 +55,11 @@ class FileIO extends FileIOInterface {
         val x = (json \\ "x").head.as[Int]
         val y = (json \\ "y").head.as[Int]
 
-        game.players(player).hand.cards(x)(y).isUncovered = true
-
+        controller.doMove(y, x, player)
+      }
+      else if(source.contains("newPlayer")) {
+        val name = (json \\ "name").head.as[String]
+        controller.createPlayer(name)
       }
 
       game

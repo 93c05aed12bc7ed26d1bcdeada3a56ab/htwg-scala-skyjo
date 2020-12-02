@@ -1,12 +1,13 @@
 package de.htwg.se.skyjo.model.fileIoComponent.fileIoXmlImpl
 
+import de.htwg.se.skyjo.controller.ControllerInterface
 import de.htwg.se.skyjo.model.fileIoComponent.FileIOInterface
 import de.htwg.se.skyjo.model.gameBoardComponent.GameBoardInterface
 
 import scala.xml.PrettyPrinter
 
 class FileIO extends FileIOInterface {
-  override def load(source: String, game: GameBoardInterface): GameBoardInterface = ???
+  override def load(source: String, game: GameBoardInterface, controller: ControllerInterface): GameBoardInterface = ???
 
   override def save(gameBoard: GameBoardInterface): Unit = saveString(gameBoard)
 
