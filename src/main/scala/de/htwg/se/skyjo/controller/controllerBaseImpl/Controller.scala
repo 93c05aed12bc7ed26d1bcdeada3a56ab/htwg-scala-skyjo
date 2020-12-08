@@ -31,6 +31,7 @@ class Controller @Inject()(var gameBoard: GameBoardInterface) extends Controller
     add(this)
     gameBoard.deck.shuffle()
     gameBoard.deck.drawCard()
+    publish(new BoardChanged)
   }
 
   override def createPlayer(name: String): Unit = {
